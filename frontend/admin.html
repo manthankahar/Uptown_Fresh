@@ -1,47 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Panel</title>
+
+<title>Admin Dashboard</title>
+
+<link rel="stylesheet" href="css/style.css">
+
 </head>
+
 <body>
 
-<h1>Admin Dashboard</h1>
+<nav class="navbar">
 
-<form id="productForm">
+<div class="logo">
+Admin Panel
+</div>
 
-    <input
-      type="text"
-      id="name"
-      placeholder="Product Name"
-      required
-    >
+</nav>
 
-    <input
-      type="number"
-      id="price"
-      placeholder="Price"
-      required
-    >
+<div class="admin-container">
 
-   <input
-  type="file"
-  id="image"
-  required
->
+<h1>Dashboard</h1>
 
-    <textarea
-      id="description"
-      placeholder="Description"
-      required
-    ></textarea>
+<div class="admin-cards">
 
-    <button type="submit">
-      Add Product
-    </button>
+<div class="admin-card">
 
-</form>
+<h2>Products</h2>
 
-<script src="js/admin.js"></script>
+<p>Manage Products</p>
+
+</div>
+
+<div class="admin-card">
+
+<h2>Orders</h2>
+
+<p>Manage Orders</p>
+
+</div>
+
+<div class="admin-card">
+
+<h2>Users</h2>
+
+<p>Manage Users</p>
+
+</div>
+
+</div>
+
+</div>
 
 </body>
 </html>

@@ -1,44 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Products</title>
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Product Details</title>
+
+<link rel="stylesheet" href="css/style.css">
+
 </head>
+
 <body>
 
-<h1>Products</h1>
+<nav class="navbar">
 
-<div id="products"></div>
+<div class="logo">UptownFresh</div>
 
-<script>
+<ul class="nav-links">
 
-fetch("http://localhost:5000/api/products")
-.then(res=>res.json())
-.then(data=>{
+<li><a href="index.html">Home</a></li>
+<li><a href="products.html">Products</a></li>
+<li><a href="cart.html">Cart</a></li>
 
-  let html="";
+</ul>
 
-  data.forEach(product=>{
+</nav>
 
-    html += `
-      <div class="card">
-        <img src="${product.image}">
-        <h3>${product.name}</h3>
-        <p>₹${product.price}</p>
+<div class="product-details">
 
-        <button>
-          Add To Cart
-        </button>
-      </div>
-    `;
+<img
+src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce"
+alt="Apple"
+>
 
-  });
+<div class="details">
 
-  document.getElementById("products").innerHTML = html;
+<h1>Fresh Apple</h1>
 
-});
+<p>
+Fresh organic apples directly from farms.
+</p>
 
-</script>
+<h2>₹120</h2>
+
+<button>
+Add To Cart
+</button>
+
+</div>
+
+</div>
 
 </body>
 </html>

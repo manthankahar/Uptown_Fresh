@@ -1,33 +1,45 @@
-document
-.getElementById("signupForm")
-.addEventListener("submit",async(e)=>{
+const form = document.querySelector("form");
+
+form.addEventListener("submit", async (e) => {
 
 e.preventDefault();
 
-const username =
-document.getElementById("username").value;
+const name =
+document.querySelector(
+'input[type="text"]'
+).value;
 
 const email =
-document.getElementById("email").value;
+document.querySelector(
+'input[type="email"]'
+).value;
 
 const password =
-document.getElementById("password").value;
+document.querySelector(
+'input[type="password"]'
+).value;
 
+const response =
 await fetch(
 "http://localhost:5000/api/auth/signup",
 {
 method:"POST",
+
 headers:{
 "Content-Type":"application/json"
 },
+
 body:JSON.stringify({
-username,
+name,
 email,
 password
 })
 }
 );
 
-alert("Signup Success");
+const data =
+await response.json();
+
+alert(data.message);
 
 });

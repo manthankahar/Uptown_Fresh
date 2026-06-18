@@ -1,23 +1,30 @@
-document
-.getElementById("loginForm")
-.addEventListener("submit",async(e)=>{
+const form = document.querySelector("form");
+
+form.addEventListener("submit", async (e) => {
 
 e.preventDefault();
 
 const email =
-document.getElementById("email").value;
+document.querySelector(
+'input[type="email"]'
+).value;
 
 const password =
-document.getElementById("password").value;
+document.querySelector(
+'input[type="password"]'
+).value;
 
-const res =
-await fetch(
+try{
+
+const response = await fetch(
 "http://localhost:5000/api/auth/login",
 {
 method:"POST",
+
 headers:{
 "Content-Type":"application/json"
 },
+
 body:JSON.stringify({
 email,
 password
@@ -26,13 +33,30 @@ password
 );
 
 const data =
-await res.json();
+await response.json();
+
+if(response.ok){
 
 localStorage.setItem(
 "token",
 data.token
 );
 
-alert("Login Success");
+alert("Login Successful");
+
+window.location.href =
+"index.html";
+
+}else{
+
+alert(data.message);
+
+}
+
+}catch(error){
+
+console.log(error);
+
+}
 
 });
