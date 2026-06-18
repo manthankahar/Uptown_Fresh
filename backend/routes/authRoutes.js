@@ -6,6 +6,7 @@ const User = require("../models/User");
 
 const router = express.Router();
 
+// Signup Route
 router.post("/signup", async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -31,10 +32,13 @@ router.post("/signup", async (req, res) => {
       user
     });
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({
+      message: error.message
+    });
   }
 });
 
+// Login Route
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -68,12 +72,15 @@ router.post("/login", async (req, res) => {
       }
     );
 
-    res.json({
+    res.status(200).json({
+      message: "Login Successful",
       token,
       user
     });
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({
+      message: error.message
+    });
   }
 });
 

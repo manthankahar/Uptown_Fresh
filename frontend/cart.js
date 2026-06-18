@@ -1,18 +1,19 @@
-const cart =
+function addToCart(product){
+
+let cart =
 JSON.parse(
 localStorage.getItem("cart")
 ) || [];
 
-let html = "";
+cart.push(product);
 
-cart.forEach(item=>{
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
 
-html += `
-<p>${item.name}</p>
-`;
+alert(
+"Added To Cart"
+);
 
-});
-
-document.getElementById(
-"cartItems"
-).innerHTML = html;
+}

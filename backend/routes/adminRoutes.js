@@ -16,6 +16,13 @@ const upload =
   }
 );
 
+// admin
+const app = express();
+app.use(
+  "/api/admin",
+  require("./routes/adminRoutes")
+);
+
 const {
   addProduct,
   getProducts,

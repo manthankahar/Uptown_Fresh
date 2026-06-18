@@ -5,28 +5,30 @@ const jwt = require("jsonwebtoken");
 // Signup
 const signup = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
 
-    const userExists = await User.findOne({ email });
+    const { name, email, password } = req.body;
+
+    const userExists =
+      await User.findOne({ email });
 
     if (userExists) {
       return res.status(400).json({
-        message: "User already exists"
+        message: "User Already Exists"
       });
     }
 
     const hashedPassword =
       await bcrypt.hash(password, 10);
 
-    const user = await User.create({
-      username,
-      email,
-      password: hashedPassword
-    });
+    const user =
+      await User.create({
+        name,
+        email,
+        password: hashedPassword
+      });
 
     res.status(201).json({
-      message: "Signup Successful",
-      user
+      message: "User Registered Successfully"
     });
 
   } catch (error) {
@@ -47,31 +49,36 @@ const login = async (req, res) => {
 
     if (!user) {
       return res.status(400).json({
-        message: "User Not Found"
+        message: "Invalid Email"
       });
     }
 
-    const match =
+    const isMatch =
       await bcrypt.compare(
         password,
         user.password
       );
 
-    if (!match) {
+    if (!isMatch) {
       return res.status(400).json({
         message: "Invalid Password"
       });
     }
 
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    const token =
+      jwt.sign(
+        {
+          id: user._id
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "7d"
+        }
+      );
 
-    res.json({
+    res.status(200).json({
       token,
-      user
+      message: "Login Successful"
     });
 
   } catch (error) {

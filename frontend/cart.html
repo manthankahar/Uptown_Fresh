@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -17,18 +18,16 @@ content="width=device-width, initial-scale=1.0">
 
 <nav class="navbar">
 
-<div class="logo">
-UptownFresh
-</div>
+<div class="logo">UptownFresh</div>
 
 <ul class="nav-links">
-
 <li><a href="index.html">Home</a></li>
-
 <li><a href="products.html">Products</a></li>
-
 <li><a href="cart.html">Cart</a></li>
-
+<li><a href="login.html">Login</a></li>
+<li><a href="signup.html">Signup</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
 </ul>
 
 </nav>
@@ -37,29 +36,52 @@ UptownFresh
 
 <h1>Your Cart</h1>
 
-<div class="cart-item">
+<div id="cartItems"></div>
 
-<h3>Apple</h3>
+<h2 id="total"></h2>
 
-<p>₹120</p>
-
-</div>
-
-<div class="cart-item">
-
-<h3>Mango</h3>
-
-<p>₹150</p>
-
-</div>
-
-<h2>Total: ₹270</h2>
-
-<button>
+<button class="btn">
 Checkout
 </button>
 
 </div>
+
+<script>
+
+const cart =
+JSON.parse(localStorage.getItem("cart"))
+|| [];
+
+let html = "";
+
+let total = 0;
+
+cart.forEach(item => {
+
+total += item.price;
+
+html += `
+<div class="cart-item">
+
+<h3>${item.name}</h3>
+
+<p>₹${item.price}</p>
+
+</div>
+`;
+
+});
+
+document.getElementById(
+"cartItems"
+).innerHTML = html;
+
+document.getElementById(
+"total"
+).innerText =
+"Total : ₹" + total;
+
+</script>
 
 </body>
 </html>
