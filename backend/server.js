@@ -14,6 +14,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Frontend Static Files
+app.use(
+  express.static(
+    path.join(__dirname, "../frontend")
+  )
+);
+
+// Uploads Folder
 app.use(
   "/uploads",
   express.static(
@@ -44,7 +52,7 @@ app.use(
   require("./routes/cartRoutes")
 );
 
-// Uncomment only if file exists
+// Admin Routes
 // app.use(
 //   "/api/admin",
 //   require("./routes/adminRoutes")
