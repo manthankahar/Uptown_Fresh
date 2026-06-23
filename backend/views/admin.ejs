@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+
+<%- include("partials/navbar") %>
+
+<div class="form-container">
+
+<h2>Add Product</h2>
+
+<form id="productForm">
+
+<input
+type="text"
+id="name"
+placeholder="Product Name"
+required
+
+>
+
+<input
+type="number"
+id="price"
+placeholder="Price"
+required
+
+>
+
+<input
+type="text"
+id="image"
+placeholder="Image URL"
+required
+
+>
+
+<textarea
+id="description"
+placeholder="Description"
+required
+></textarea>
+
+<button type="submit">
+Add Product
+</button>
+
+</form>
+
+</div>
+
+<script>
+
+document
+.getElementById("productForm")
+.addEventListener(
+"submit",
+async (e) => {
+
+e.preventDefault();
+
+const product = {
+
+name:
+document.getElementById("name").value,
+
+price:
+document.getElementById("price").value,
+
+image:
+document.getElementById("image").value,
+
+description:
+document.getElementById("description").value
+
+};
+
+const response =
+await fetch(
+"http://localhost:5000/api/products",
+{
+method:"POST",
+
+headers:{
+"Content-Type":
+"application/json"
+},
+
+body:JSON.stringify(product)
+
+}
+);
+
+const data =
+await response.json();
+
+alert("Product Added Successfully");
+
+document
+.getElementById("productForm")
+.reset();
+
+}
+);
+
+</script>
+
+<%- include("partials/footer") %>
+
+</body>
+</html>
