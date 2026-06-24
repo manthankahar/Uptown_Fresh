@@ -110,22 +110,28 @@ confirm(
 
 if(!confirmDelete) return;
 
-await fetch(
+const token =
+localStorage.getItem("token");
+
+const response = await fetch(
 `http://localhost:5000/api/products/${id}`,
 {
-method:"DELETE"
+method:"DELETE",
+
+headers:{
+Authorization:`Bearer ${token}`
+}
 }
 );
 
-alert(
-"Product Deleted"
-);
+const data =
+await response.json();
+
+alert(data.message);
 
 location.reload();
 
 }
-
-
 </script>
 
 </body>
