@@ -42,6 +42,17 @@ localStorage.setItem(
 data.token
 );
 
+localStorage.setItem(
+"userEmail",
+email
+);
+
+/* ADD THIS */
+localStorage.setItem(
+"userEmail",
+email
+);
+
 alert("Login Successful");
 
 window.location.href =

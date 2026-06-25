@@ -4,114 +4,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel</title>
-
+<title>Admin Dashboard - UptownFresh</title>
 <link rel="stylesheet" href="/css/style.css">
-
 </head>
 <body>
 
 <%- include("partials/navbar") %>
 
-<div class="form-container">
+<div class="admin-container">
 
+<h1 class="page-title">
+Admin Dashboard
+</h1>
+
+<p style="text-align:center;margin-bottom:30px;">
+Manage Products & Store Operations
+</p>
+
+<div class="admin-cards">
+
+<div class="admin-card">
 <h2>Add Product</h2>
+<p>Add new fruits and vegetables</p>
 
-<form id="productForm">
-
-<input
-type="text"
-id="name"
-placeholder="Product Name"
-required
-
->
-
-<input
-type="number"
-id="price"
-placeholder="Price"
-required
-
->
-
-<input
-type="text"
-id="image"
-placeholder="Image URL"
-required
-
->
-
-<textarea
-id="description"
-placeholder="Description"
-required
-></textarea>
-
-<button type="submit">
+<a href="/add-product" class="btn">
 Add Product
-</button>
+</a>
+</div>
 
-</form>
+<div class="admin-card">
+<h2>Manage Products</h2>
+<p>Delete or update products</p>
+
+<a href="/products" class="btn">
+Manage
+</a>
+</div>
+
+<div class="admin-card">
+<h2>Total Store</h2>
+<p>View all available products</p>
+
+<a href="/products" class="btn">
+View Products
+</a>
+</div>
 
 </div>
 
-<script>
-
-document
-.getElementById("productForm")
-.addEventListener(
-"submit",
-async (e) => {
-
-e.preventDefault();
-
-const product = {
-
-name:
-document.getElementById("name").value,
-
-price:
-document.getElementById("price").value,
-
-image:
-document.getElementById("image").value,
-
-description:
-document.getElementById("description").value
-
-};
-
-const response =
-await fetch(
-"http://localhost:5000/api/products",
-{
-method:"POST",
-
-headers:{
-"Content-Type":
-"application/json"
-},
-
-body:JSON.stringify(product)
-
-}
-);
-
-const data =
-await response.json();
-
-alert("Product Added Successfully");
-
-document
-.getElementById("productForm")
-.reset();
-
-}
-);
-
-</script>
+</div>
 
 <%- include("partials/footer") %>
 

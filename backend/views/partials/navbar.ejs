@@ -6,9 +6,101 @@
 <li><a href="/">Home</a></li>
 <li><a href="/products">Products</a></li>
 <li><a href="/cart">Cart</a></li>
-<li><a href="/login">Login</a></li>
-<li><a href="/signup">Signup</a></li>
 <li><a href="/admin">Admin</a></li>
+<li><a href="/add-product">Add Product</a></li>
 </ul>
+
+<div id="userSection">
+
+<a id="loginBtn" href="/login">
+Login
+</a>
+
+<a id="signupBtn" href="/signup">
+Signup
+</a>
+
+<span
+id="userInfo"
+style="
+font-weight:bold;
+margin-left:15px;
+color:#27ae60;
+"
+
+> </span>
+
+<button
+id="logoutBtn"
+onclick="logout()"
+style="
+display:none;
+margin-left:10px;
+padding:8px 15px;
+background:red;
+color:white;
+border:none;
+cursor:pointer;
+border-radius:5px;
+"
+
+>
+
+Logout </button>
+
+</div>
+
+<script>
+
+const email =
+localStorage.getItem("userEmail");
+
+const token =
+localStorage.getItem("token");
+
+if(email && token){
+
+document.getElementById(
+"userInfo"
+).innerText =
+"👤 " + email;
+
+document.getElementById(
+"logoutBtn"
+).style.display =
+"inline-block";
+
+document.getElementById(
+"loginBtn"
+).style.display =
+"none";
+
+document.getElementById(
+"signupBtn"
+).style.display =
+"none";
+
+}
+
+function logout(){
+
+localStorage.removeItem(
+"token"
+);
+
+localStorage.removeItem(
+"userEmail"
+);
+
+alert(
+"Logout Successful"
+);
+
+window.location.href =
+"/login";
+
+}
+
+</script>
 
 </nav>

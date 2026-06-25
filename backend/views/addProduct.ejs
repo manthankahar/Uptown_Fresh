@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Add Product - UptownFresh</title>
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<%- include("partials/navbar") %>
+
+<div class="form-container">
+
+<h2>Add New Product</h2>
+
+<form id="productForm">
+
+<input
+type="text"
+id="name"
+placeholder="Product Name"
+required
+
+>
+
+<input
+type="number"
+id="price"
+placeholder="Product Price"
+required
+
+>
+
+<input
+type="text"
+id="image"
+placeholder="Image URL"
+required
+
+>
+
+<textarea
+id="description"
+placeholder="Product Description"
+required
+></textarea>
+
+<button type="submit">
+Add Product
+</button>
+
+</form>
+
+</div>
+
+<script>
+
+const token =
+localStorage.getItem("token");
+
+if(!token){
+
+alert(
+"Please Login First"
+);
+
+window.location.href =
+"/login";
+
+}
+
+document
+.getElementById("productForm")
+.addEventListener(
+"submit",
+async (e) => {
+
+e.preventDefault();
+
+try{
+
+const response =
+await fetch(
+"http://localhost:5000/api/products",
+{
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+Authorization:`Bearer ${token}`
+},
+
+body:JSON.stringify({
+
+name:
+document.getElementById("name").value,
+
+price:
+document.getElementById("price").value,
+
+image:
+document.getElementById("image").value,
+
+description:
+document.getElementById("description").value
+
+})
+
+}
+);
+
+const data =
+await response.json();
+
+if(response.ok){
+
+alert(
+"Product Added Successfully"
+);
+
+window.location.href =
+"/products";
+
+}else{
+
+alert(
+data.message
+);
+
+}
+
+}catch(error){
+
+console.log(error);
+
+alert(
+"Something Went Wrong"
+);
+
+}
+
+});
+
+</script>
+
+<%- include("partials/footer") %>
+
+</body>
+</html>

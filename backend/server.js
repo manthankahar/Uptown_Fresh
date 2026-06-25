@@ -177,6 +177,11 @@ app.get("/admin", (req, res) => {
 res.render("admin");
 });
 
+
+app.get("/add-product",(req,res)=>{
+res.render("add-product");
+});
+
 // Upload Folder
 app.use(
 "/uploads",
