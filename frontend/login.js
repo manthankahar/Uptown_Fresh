@@ -14,80 +14,68 @@ document.querySelector(
 'input[type="password"]'
 ).value;
 
-try{
+try {
 
 const response = await fetch(
-"http://localhost:5000/api/auth/login",
-{
-method:"POST",
+  "http://localhost:5000/api/auth/login",
+  {
+    method: "POST",
 
-headers:{
-"Content-Type":"application/json"
-},
+    headers: {
+      "Content-Type": "application/json"
+    },
 
-body:JSON.stringify({
-email,
-password
-})
-}
+    body: JSON.stringify({
+      email,
+      password
+    })
+  }
 );
 
 const data =
-await response.json();
+  await response.json();
 
-if(response.ok){
+console.log(data);
 
-localStorage.setItem(
-"token",
-data.token
-);
+if (response.ok) {
 
-localStorage.setItem(
-"userRole",
-data.user.role
-);
+  localStorage.setItem(
+    "token",
+    data.token
+  );
 
-localStorage.setItem(
-"token",
-data.token
-);
+  localStorage.setItem(
+    "userEmail",
+    data.user.email
+  );
 
-localStorage.setItem(
-"userEmail",
-email
-);
+  localStorage.setItem(
+    "userRole",
+    data.user.role
+  );
 
-localStorage.setItem(
-"userRole",
-data.user.role
-);
+  alert(
+    "Login Successful"
+  );
 
-/* ADD THIS */
-localStorage.setItem(
-"userEmail",
-email
-);
+  window.location.href =
+    "index.html";
 
-alert("Login Successful");
+} else {
 
-window.location.href =
-"index.html";
-
-}else{
-
-alert(data.message);
+  alert(
+    data.message
+  );
 
 }
 
-}catch(error){
+
+} catch (error) {
+
 
 console.log(error);
+
 
 }
 
 });
-
-const data =
-await response.json();
-
-console.log(data);
