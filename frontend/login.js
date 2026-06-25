@@ -43,8 +43,23 @@ data.token
 );
 
 localStorage.setItem(
+"userRole",
+data.user.role
+);
+
+localStorage.setItem(
+"token",
+data.token
+);
+
+localStorage.setItem(
 "userEmail",
 email
+);
+
+localStorage.setItem(
+"userRole",
+data.user.role
 );
 
 /* ADD THIS */
@@ -71,3 +86,8 @@ console.log(error);
 }
 
 });
+
+const data =
+await response.json();
+
+console.log(data);
