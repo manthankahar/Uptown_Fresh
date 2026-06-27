@@ -3,11 +3,23 @@
 <div class="logo">UptownFresh</div>
 
 <ul class="nav-links">
+
 <li><a href="/">Home</a></li>
+
 <li><a href="/products">Products</a></li>
+
 <li><a href="/cart">Cart</a></li>
-<li><a href="/admin">Admin</a></li>
-<li><a href="/add-product">Add Product</a></li>
+
+<li id="adminLink">
+<a href="/admin">Admin</a>
+</li>
+
+<li id="addProductLink">
+<a href="/add-product">
+Add Product
+</a>
+</li>
+
 </ul>
 
 <div id="userSection">
@@ -58,6 +70,9 @@ localStorage.getItem("userEmail");
 const token =
 localStorage.getItem("token");
 
+const role =
+localStorage.getItem("userRole");
+
 if(email && token){
 
 document.getElementById(
@@ -82,6 +97,22 @@ document.getElementById(
 
 }
 
+/* Hide Admin Links */
+
+if(role !== "admin"){
+
+document.getElementById(
+"adminLink"
+).style.display =
+"none";
+
+document.getElementById(
+"addProductLink"
+).style.display =
+"none";
+
+}
+
 function logout(){
 
 localStorage.removeItem(
@@ -90,6 +121,14 @@ localStorage.removeItem(
 
 localStorage.removeItem(
 "userEmail"
+);
+
+localStorage.removeItem(
+"userRole"
+);
+
+localStorage.removeItem(
+"cart"
 );
 
 alert(
