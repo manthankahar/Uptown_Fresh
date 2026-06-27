@@ -3,40 +3,103 @@ async function loadProducts() {
 try {
 
 const response = await fetch(
-  "http://localhost:5000/api/products"
+"http://localhost:5000/api/products"
 );
 
 const products = await response.json();
 
 const container =
-  document.getElementById(
-    "products-container"
-  );
+document.getElementById(
+"products-container"
+);
+
+const role =
+localStorage.getItem("userRole");
 
 container.innerHTML = "";
 
 products.forEach(product => {
 
-  container.innerHTML += `
-  <div class="card">
+container.innerHTML += `
 
-    <img
-      src="${product.image}"
-      alt="${product.name}"
-    >
+<div class="card">
 
-    <h3>${product.name}</h3>
+<span
+style="
+background:#27ae60;
+color:white;
+padding:6px 12px;
+border-radius:20px;
+position:absolute;
+margin:10px;
+font-size:13px;
+"
+>
+🌿 Fresh
+</span>
 
-    <p>${product.description}</p>
+<img
+src="${product.image}"
+alt="${product.name}"
+>
 
-    <p><b>₹${product.price}</b></p>
+<h3>${product.name}</h3>
 
-    <button>
-      Add To Cart
-    </button>
+<p>${product.description}</p>
 
-  </div>
-  `;
+<p>
+⭐⭐⭐⭐⭐
+</p>
+
+<p>
+<b>Category :</b>
+${product.category}
+</p>
+
+<p style="color:green;">
+<b>Stock :</b>
+${product.stock}
+</p>
+
+<h2 style="color:#27ae60;">
+₹${product.price}
+</h2>
+
+<button
+onclick='addToCart(${JSON.stringify(product)})'
+>
+🛒 Add To Cart
+</button>
+
+${
+role === "admin"
+?
+
+`
+
+<button
+onclick="deleteProduct('${product._id}')"
+style="
+background:red;
+margin-top:10px;
+"
+>
+
+Delete
+
+</button>
+
+`
+
+:
+
+""
+
+}
+
+</div>
+
+`;
 
 });
 
@@ -44,9 +107,71 @@ products.forEach(product => {
 
 console.log(error);
 
-
 }
 
 }
 
 loadProducts();
+
+function addToCart(product){
+
+let cart =
+JSON.parse(
+localStorage.getItem("cart")
+)
+|| [];
+
+cart.push(product);
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+
+alert(
+"✅ Product Added To Cart"
+);
+
+}
+
+async function deleteProduct(id){
+
+const confirmDelete =
+confirm(
+"Delete this Product?"
+);
+
+if(!confirmDelete)
+return;
+
+const token =
+localStorage.getItem("token");
+
+const response =
+await fetch(
+
+`http://localhost:5000/api/products/${id}`,
+
+{
+
+method:"DELETE",
+
+headers:{
+
+Authorization:
+`Bearer ${token}`
+
+}
+
+}
+
+);
+
+const data =
+await response.json();
+
+alert(data.message);
+
+loadProducts();
+
+}

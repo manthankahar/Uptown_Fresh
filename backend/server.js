@@ -190,6 +190,12 @@ path.join(__dirname, "uploads")
 )
 );
 
+// check out 
+
+app.get("/checkout",(req,res)=>{
+res.render("checkout");
+});
+
 // API Routes
 app.use(
 "/api/auth",

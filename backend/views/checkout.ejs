@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Checkout</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+
+<%- include("partials/navbar") %>
+
+<div class="form-container">
+
+<h2>
+Checkout
+</h2>
+
+<form id="checkoutForm">
+
+<input
+type="text"
+id="name"
+placeholder="Full Name"
+required
+>
+
+<input
+type="text"
+id="address"
+placeholder="Delivery Address"
+required
+>
+
+<input
+type="tel"
+id="phone"
+placeholder="Mobile Number"
+required
+>
+
+<select
+id="payment"
+required
+style="
+padding:14px;
+border:1px solid #ddd;
+border-radius:8px;
+font-size:16px;
+">
+
+<option value="">
+Select Payment Method
+</option>
+
+<option>
+Cash On Delivery
+</option>
+
+<option>
+UPI
+</option>
+
+<option>
+Credit / Debit Card
+</option>
+
+</select>
+
+<button type="submit">
+
+Place Order
+
+</button>
+
+</form>
+
+</div>
+
+<script>
+
+document
+.getElementById("checkoutForm")
+.addEventListener(
+"submit",
+function(e){
+
+e.preventDefault();
+
+alert(
+"🎉 Order Placed Successfully!"
+);
+
+localStorage.removeItem("cart");
+
+window.location.href="/";
+
+});
+
+</script>
+
+</body>
+
+</html>

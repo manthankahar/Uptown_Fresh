@@ -1,20 +1,149 @@
 <!DOCTYPE html>
+<html lang="en">
 
-<html>
 <head>
-<title>TEST</title>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>UptownFresh | Fresh Grocery Store</title>
+
 <link rel="stylesheet" href="/css/style.css">
+
 </head>
+
 <body>
 
-<nav class="navbar">
-<div class="logo">UptownFresh</div>
-</nav>
+<%- include("partials/navbar") %>
 
 <section class="hero">
-<h1>TEST PAGE WORKING</h1>
-<p>CSS Loading Check</p>
+
+<h1>
+Fresh Groceries Delivered To Your Door
+</h1>
+
+<p>
+Fresh Fruits • Vegetables • Dairy • Fast Delivery
+</p>
+
+<a href="/products" class="btn">
+🛒 Shop Now
+</a>
+
 </section>
 
+<section class="features">
+
+<div class="feature-card">
+
+<h2>🚚</h2>
+
+<h3>Fast Delivery</h3>
+
+<p>
+Delivery within 30 minutes.
+</p>
+
+</div>
+
+<div class="feature-card">
+
+<h2>🥬</h2>
+
+<h3>Fresh Products</h3>
+
+<p>
+100% Fresh Fruits & Vegetables.
+</p>
+
+</div>
+
+<div class="feature-card">
+
+<h2>💳</h2>
+
+<h3>Secure Payment</h3>
+
+<p>
+Safe and Secure Online Payments.
+</p>
+
+</div>
+
+</section>
+
+<h1 class="page-title">
+Featured Products
+</h1>
+
+<div class="products-container">
+
+<div class="card">
+
+<img src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce">
+
+<h3>Fresh Apple</h3>
+
+<p>Organic & Fresh</p>
+
+<h2 style="padding:10px;color:#27ae60;">
+₹120/kg
+</h2>
+
+<a href="/products" class="btn">
+View Product
+</a>
+
+</div>
+
+<div class="card">
+
+<img src="https://images.unsplash.com/photo-1574226516831-e1dff420e37f">
+
+<h3>Fresh Banana</h3>
+
+<p>Farm Fresh</p>
+
+<h2 style="padding:10px;color:#27ae60;">
+₹60/dozen
+</h2>
+
+<a href="/products" class="btn">
+View Product
+</a>
+
+</div>
+
+<div class="card">
+
+<img src="https://images.unsplash.com/photo-1550258987-190a2d41a8ba">
+
+<h3>Fresh Orange</h3>
+
+<p>Vitamin C Rich</p>
+
+<h2 style="padding:10px;color:#27ae60;">
+₹150/kg
+</h2>
+
+<a href="/products" class="btn">
+View Product
+</a>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>
+© 2026 UptownFresh | All Rights Reserved
+</p>
+
+</footer>
+
 </body>
+
 </html>
