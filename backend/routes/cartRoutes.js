@@ -1,50 +1,72 @@
 const express = require("express");
 
-const Cart = require("../models/Cart");
-
-const authMiddleware =
-  require("../middleware/authMiddleware");
-
 const router = express.Router();
 
+const authMiddleware =
+require("../middleware/authMiddleware");
+
+const {
+
+addToCart,
+
+getCart,
+
+removeFromCart,
+
+clearCart
+
+}
+
+=
+
+require("../controllers/cartController");
+
+// Add Product
+
 router.post(
-  "/add",
-  authMiddleware,
-  async (req, res) => {
-    const { productId } = req.body;
 
-    let cart = await Cart.findOne({
-      userId: req.user.id
-    });
+"/add",
 
-    if (!cart) {
-      cart = new Cart({
-        userId: req.user.id,
-        products: []
-      });
-    }
+authMiddleware,
 
-    cart.products.push({
-      productId,
-      quantity: 1
-    });
+addToCart
 
-    await cart.save();
-
-    res.json(cart);
-  }
 );
 
-router.get(
-  "/",
-  authMiddleware,
-  async (req, res) => {
-    const cart = await Cart.findOne({
-      userId: req.user.id
-    }).populate("products.productId");
+// Get Cart
 
-    res.json(cart);
-  }
+router.get(
+
+"/",
+
+authMiddleware,
+
+getCart
+
+);
+
+// Remove Product
+
+router.delete(
+
+"/remove/:id",
+
+authMiddleware,
+
+removeFromCart
+
+);
+
+// Clear Cart
+
+router.delete(
+
+"/clear",
+
+authMiddleware,
+
+clearCart
+
 );
 
 module.exports = router;

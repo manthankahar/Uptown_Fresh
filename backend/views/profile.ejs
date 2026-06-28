@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>My Profile</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+
+<%- include("partials/navbar") %>
+
+<div class="form-container">
+
+<h2>
+👤 My Profile
+</h2>
+
+<hr><br>
+
+<h3 id="name"></h3>
+
+<p id="email"></p>
+
+<p id="role"></p>
+
+<br>
+
+<a
+href="/products"
+class="btn"
+>
+
+Continue Shopping
+
+</a>
+
+</div>
+
+<script>
+
+const email =
+localStorage.getItem("userEmail");
+
+const role =
+localStorage.getItem("userRole");
+
+document.getElementById(
+"name"
+).innerText =
+email
+?
+email.split("@")[0]
+:
+"Guest";
+
+document.getElementById(
+"email"
+).innerText =
+"Email : "
++
+(email || "Not Logged In");
+
+document.getElementById(
+"role"
+).innerText =
+"Role : "
++
+(role || "Guest");
+
+</script>
+
+</body>
+
+</html>

@@ -196,6 +196,14 @@ app.get("/checkout",(req,res)=>{
 res.render("checkout");
 });
 
+
+// profile.ejs routs
+
+app.get("/profile",(req,res)=>{
+res.render("profile");
+});
+
+
 // API Routes
 app.use(
 "/api/auth",
