@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>My Orders</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+
+<%- include("partials/navbar") %>
+
+<h1 class="page-title">
+📦 My Orders
+</h1>
+
+<div
+id="orders"
+class="products-container"
+>
+
+Loading...
+
+</div>
+
+<script>
+
+const token =
+localStorage.getItem("token");
+
+fetch(
+
+"http://localhost:5000/api/orders/my",
+
+{
+
+headers:{
+
+Authorization:
+`Bearer ${token}`
+
+}
+
+}
+
+)
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let html="";
+
+if(data.length===0){
+
+html=`
+
+<div
+style="
+text-align:center;
+width:100%;
+"
+>
+
+<h2>
+No Orders Yet
+</h2>
+
+<a
+href="/products"
+class="btn"
+>
+
+Shop Now
+
+</a>
+
+</div>
+
+`;
+
+}else{
+
+data.forEach(order=>{
+
+html+=`
+
+<div class="card">
+
+<h2>
+
+Order
+
+</h2>
+
+<p>
+
+Status :
+<b
+style="
+color:green;
+"
+>
+
+${order.status}
+
+</b>
+
+</p>
+
+<p>
+
+Total :
+₹${order.totalPrice}
+
+</p>
+
+<p>
+
+Items :
+${order.products.length}
+
+</p>
+
+<p>
+
+Date :
+${new Date(order.createdAt).toLocaleDateString()}
+
+</p>
+
+</div>
+
+`;
+
+});
+
+}
+
+document.getElementById(
+"orders"
+).innerHTML=html;
+
+});
+
+</script>
+
+</body>
+
+</html>

@@ -220,6 +220,17 @@ app.use(
 require("./routes/cartRoutes")
 );
 
+
+app.use(
+"/api/orders",
+require("./routes/orderRoutes")
+);
+
+app.get("/orders",(req,res)=>{
+res.render("orders");
+});
+
+
 const PORT =
 process.env.PORT || 5000;
 

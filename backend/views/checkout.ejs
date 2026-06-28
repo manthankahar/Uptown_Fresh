@@ -21,7 +21,7 @@ content="width=device-width, initial-scale=1.0">
 <div class="form-container">
 
 <h2>
-Checkout
+🛒 Checkout
 </h2>
 
 <form id="checkoutForm">
@@ -35,27 +35,21 @@ required
 
 <input
 type="text"
-id="address"
-placeholder="Delivery Address"
-required
->
-
-<input
-type="tel"
 id="phone"
 placeholder="Mobile Number"
 required
 >
 
+<textarea
+id="address"
+placeholder="Delivery Address"
+required
+></textarea>
+
 <select
 id="payment"
 required
-style="
-padding:14px;
-border:1px solid #ddd;
-border-radius:8px;
-font-size:16px;
-">
+>
 
 <option value="">
 Select Payment Method
@@ -75,7 +69,16 @@ Credit / Debit Card
 
 </select>
 
-<button type="submit">
+<br>
+
+<h3 id="totalPrice">
+Total : ₹0
+</h3>
+
+<button
+type="submit"
+class="btn"
+>
 
 Place Order
 
@@ -87,21 +90,81 @@ Place Order
 
 <script>
 
+const cart =
+JSON.parse(
+localStorage.getItem("cart")
+) || [];
+
+let total = 0;
+
+cart.forEach(item=>{
+
+total += item.price;
+
+});
+
+document.getElementById(
+"totalPrice"
+).innerText =
+"Total : ₹"+total;
+
 document
 .getElementById("checkoutForm")
 .addEventListener(
 "submit",
-function(e){
+async function(e){
 
 e.preventDefault();
 
-alert(
-"🎉 Order Placed Successfully!"
+const token =
+localStorage.getItem("token");
+
+const response =
+await fetch(
+
+"http://localhost:5000/api/orders/place",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json",
+
+Authorization:
+`Bearer ${token}`
+
+},
+
+body:JSON.stringify({
+
+name:
+document.getElementById("name").value,
+
+phone:
+document.getElementById("phone").value,
+
+address:
+document.getElementById("address").value,
+
+payment:
+document.getElementById("payment").value
+
+})
+
+}
+
 );
+
+const data =
+await response.json();
+
+alert(data.message);
 
 localStorage.removeItem("cart");
 
-window.location.href="/";
+window.location.href="/orders";
 
 });
 

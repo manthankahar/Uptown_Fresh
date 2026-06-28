@@ -7,47 +7,33 @@ require("../middleware/authMiddleware");
 
 const {
 
-addToCart,
+placeOrder,
 
-getCart,
+getOrders
 
-removeItem
+} = require("../controllers/orderController");
 
-} = require("../controllers/cartController");
-
-// Add Product To Cart
+// Place Order
 
 router.post(
 
-"/add",
+"/place",
 
 authMiddleware,
 
-addToCart
+placeOrder
 
 );
 
-// Get User Cart
+// My Orders
 
 router.get(
 
-"/",
+"/my",
 
 authMiddleware,
 
-getCart
-
-);
-
-// Remove Item
-
-router.delete(
-
-"/:id",
-
-authMiddleware,
-
-removeItem
+getOrders
 
 );
 

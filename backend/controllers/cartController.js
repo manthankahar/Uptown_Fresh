@@ -1,208 +1,146 @@
-
 const Cart = require("../models/Cart");
 
-// ===========================
+// =========================
 // Add Product To Cart
-// ===========================
+// =========================
 
 const addToCart = async (req, res) => {
 
-try{
+try {
 
 const { productId } = req.body;
 
 let cart = await Cart.findOne({
-userId:req.user.id
+userId: req.user.id
 });
 
-if(!cart){
+if (!cart) {
 
 cart = new Cart({
-
-userId:req.user.id,
-
-products:[]
-
+userId: req.user.id,
+products: []
 });
 
 }
 
-const existingProduct =
-cart.products.find(
+const existingProduct = cart.products.find(
 
-item=>
-
-item.productId.toString()===productId
+item => item.productId.toString() === productId
 
 );
 
-if(existingProduct){
+if (existingProduct) {
 
 existingProduct.quantity += 1;
 
-}else{
+} else {
 
 cart.products.push({
-
 productId,
-
-quantity:1
-
+quantity: 1
 });
 
 }
 
 await cart.save();
 
-res.status(200).json({
-
-message:"Product Added To Cart",
-
+res.json({
+message: "Product Added To Cart",
 cart
-
 });
 
-}catch(error){
+} catch (error) {
 
 res.status(500).json({
-
-message:error.message
-
+message: error.message
 });
 
 }
 
 };
 
-// ===========================
+// =========================
 // Get User Cart
-// ===========================
+// =========================
 
-const getCart = async(req,res)=>{
+const getCart = async (req, res) => {
 
-try{
+try {
 
-const cart =
-await Cart.findOne({
+const cart = await Cart.findOne({
 
-userId:req.user.id
+userId: req.user.id
 
 }).populate("products.productId");
 
-res.status(200).json(cart);
+if (!cart) {
 
-}catch(error){
+return res.json({
+products: []
+});
+
+}
+
+res.json(cart);
+
+} catch (error) {
 
 res.status(500).json({
-
-message:error.message
-
+message: error.message
 });
 
 }
 
 };
 
-// ===========================
-// Remove Item
-// ===========================
+// =========================
+// Remove Item From Cart
+// =========================
 
-const removeFromCart =
-async(req,res)=>{
+const removeItem = async (req, res) => {
 
-try{
+try {
 
-let cart =
-await Cart.findOne({
-
-userId:req.user.id
-
+const cart = await Cart.findOne({
+userId: req.user.id
 });
 
-cart.products =
-cart.products.filter(
+if (!cart) {
 
-item=>
+return res.status(404).json({
+message: "Cart Not Found"
+});
 
-item.productId.toString()
+}
 
-!==
+cart.products = cart.products.filter(
 
-req.params.id
+item => item.productId.toString() !== req.params.id
 
 );
 
 await cart.save();
 
 res.json({
-
-message:"Product Removed"
-
+message: "Item Removed Successfully"
 });
 
-}catch(error){
+} catch (error) {
 
 res.status(500).json({
-
-message:error.message
-
+message: error.message
 });
 
 }
 
 };
 
-// ===========================
-// Clear Cart
-// ===========================
-
-const clearCart =
-async(req,res)=>{
-
-try{
-
-await Cart.findOneAndUpdate(
-
-{
-
-userId:req.user.id
-
-},
-
-{
-
-products:[]
-
-}
-
-);
-
-res.json({
-
-message:"Cart Cleared"
-
-});
-
-}catch(error){
-
-res.status(500).json({
-
-message:error.message
-
-});
-
-}
-
-};
-
-module.exports={
+module.exports = {
 
 addToCart,
 
 getCart,
 
-removeFromCart,
-
-clearCart
+removeItem
 
 };
