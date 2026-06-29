@@ -7,9 +7,16 @@ localStorage.getItem("token");
 
 if(!token){
 
-alert("Please Login First");
+showToast(
+"Please Login First",
+"error"
+);
+
+setTimeout(()=>{
 
 window.location.href="/login";
+
+},1500);
 
 return;
 
@@ -43,13 +50,39 @@ productId:product._id
 const data =
 await response.json();
 
-alert(data.message);
+if(response.ok){
+
+showToast(
+
+data.message || "Product Added To Cart",
+
+"success"
+
+);
+
+}else{
+
+showToast(
+
+data.message || "Failed To Add Product",
+
+"error"
+
+);
+
+}
 
 }catch(error){
 
 console.log(error);
 
-alert("Something Went Wrong");
+showToast(
+
+"Something Went Wrong",
+
+"error"
+
+);
 
 }
 

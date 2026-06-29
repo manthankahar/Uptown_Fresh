@@ -1,6 +1,10 @@
 <nav class="navbar">
 
-<div class="logo">UptownFresh</div>
+<div class="logo">
+<a href="/" style="text-decoration:none;color:#27ae60;">
+UptownFresh
+</a>
+</div>
 
 <ul class="nav-links">
 
@@ -10,24 +14,20 @@
 
 <li><a href="/cart">Cart</a></li>
 
+<li id="ordersLink">
+<a href="/orders">Orders</a>
+</li>
+
+<li id="profileLink">
+<a href="/profile">Profile</a>
+</li>
+
 <li id="adminLink">
 <a href="/admin">Admin</a>
 </li>
 
 <li id="addProductLink">
-<a href="/add-product">
-Add Product
-</a>
-</li>
-
-<li>
-<a href="/cart">Cart</a>
-</li>
-
-<li id="profileLink">
-<a href="/profile">
-Profile
-</a>
+<a href="/add-product">Add Product</a>
 </li>
 
 </ul>
@@ -45,12 +45,11 @@ Signup
 <span
 id="userInfo"
 style="
-font-weight:bold;
+font-weight:600;
 margin-left:15px;
 color:#27ae60;
-"
-
-> </span>
+">
+</span>
 
 <button
 id="logoutBtn"
@@ -58,98 +57,78 @@ onclick="logout()"
 style="
 display:none;
 margin-left:10px;
-padding:8px 15px;
-background:red;
+padding:10px 18px;
+background:#e74c3c;
 color:white;
 border:none;
+border-radius:8px;
 cursor:pointer;
-border-radius:5px;
-"
+">
 
->
+Logout
 
-Logout </button>
+</button>
 
 </div>
 
 <script>
 
-const email =
-localStorage.getItem("userEmail");
+const email = localStorage.getItem("userEmail");
+const token = localStorage.getItem("token");
+const role = localStorage.getItem("userRole");
 
-const token =
-localStorage.getItem("token");
-
-const role =
-localStorage.getItem("userRole");
+// Default Hide
+document.getElementById("adminLink").style.display = "none";
+document.getElementById("addProductLink").style.display = "none";
+document.getElementById("ordersLink").style.display = "none";
+document.getElementById("profileLink").style.display = "none";
 
 if(email && token){
 
-document.getElementById(
-"userInfo"
-).innerText =
+document.getElementById("userInfo").innerHTML =
 "👤 " + email;
 
-document.getElementById(
-"logoutBtn"
-).style.display =
+document.getElementById("logoutBtn").style.display =
 "inline-block";
 
-document.getElementById(
-"loginBtn"
-).style.display =
+document.getElementById("loginBtn").style.display =
 "none";
 
-document.getElementById(
-"signupBtn"
-).style.display =
+document.getElementById("signupBtn").style.display =
 "none";
+
+document.getElementById("ordersLink").style.display =
+"block";
+
+document.getElementById("profileLink").style.display =
+"block";
+
+if(role === "admin"){
+
+document.getElementById("adminLink").style.display =
+"block";
+
+document.getElementById("addProductLink").style.display =
+"block";
 
 }
-
-/* Hide Admin Links */
-
-if(role !== "admin"){
-
-document.getElementById(
-"adminLink"
-).style.display =
-"none";
-
-document.getElementById(
-"addProductLink"
-).style.display =
-"none";
 
 }
 
 function logout(){
 
-localStorage.removeItem(
-"token"
-);
+localStorage.removeItem("token");
+localStorage.removeItem("userEmail");
+localStorage.removeItem("userRole");
+localStorage.removeItem("cart");
 
-localStorage.removeItem(
-"userEmail"
-);
+alert("Logout Successful");
 
-localStorage.removeItem(
-"userRole"
-);
-
-localStorage.removeItem(
-"cart"
-);
-
-alert(
-"Logout Successful"
-);
-
-window.location.href =
-"/login";
+window.location.replace("/login");
 
 }
 
 </script>
 
 </nav>
+```
