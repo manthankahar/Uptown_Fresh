@@ -12,7 +12,30 @@ UptownFresh
 
 <li><a href="/products">Products</a></li>
 
-<li><a href="/cart">Cart</a></li>
+<li>
+<a href="/cart">
+
+Cart
+<span
+
+id="cartCount"
+
+style="
+background:#27ae60;
+color:white;
+padding:2px 8px;
+border-radius:50%;
+font-size:13px;
+margin-left:5px;
+">
+
+0
+
+</span>
+
+</a>
+
+</li>
 
 <li id="ordersLink">
 <a href="/orders">Orders</a>
@@ -122,13 +145,29 @@ localStorage.removeItem("userEmail");
 localStorage.removeItem("userRole");
 localStorage.removeItem("cart");
 
+
 alert("Logout Successful");
 
 window.location.replace("/login");
 
 }
 
+function updateCartCount(){
+
+const cart =
+JSON.parse(
+localStorage.getItem("cart")
+) || [];
+
+document.getElementById(
+"cartCount"
+).innerText =
+cart.length;
+
+}
+
+updateCartCount();
+
 </script>
 
 </nav>
-```

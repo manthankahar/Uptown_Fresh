@@ -346,7 +346,54 @@ object-fit:cover;
 
 <p>${product.description}</p>
 
-<p><b>Qty :</b> ${quantity}</p>
+<div
+style="
+display:flex;
+align-items:center;
+gap:10px;
+margin:10px 0;
+"
+>
+
+<button
+onclick="decreaseQuantity('${product._id}')"
+style="
+width:35px;
+height:35px;
+border:none;
+background:#e74c3c;
+color:white;
+border-radius:6px;
+cursor:pointer;
+font-size:18px;
+"
+>
+
+-
+
+</button>
+
+<b>${quantity}</b>
+
+<button
+onclick="increaseQuantity('${product._id}')"
+style="
+width:35px;
+height:35px;
+border:none;
+background:#27ae60;
+color:white;
+border-radius:6px;
+cursor:pointer;
+font-size:18px;
+"
+>
+
++
+
+</button>
+
+</div>
 
 <p style="color:#27ae60;">
 
@@ -426,7 +473,7 @@ Authorization:`Bearer ${token}`
 const data =
 await response.json();
 
-alert(data.message);
+showToast(data.message,"success");
 
 loadCart();
 

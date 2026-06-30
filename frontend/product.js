@@ -60,6 +60,18 @@ data.message || "Product Added To Cart",
 
 );
 
+let cart =
+JSON.parse(
+localStorage.getItem("cart")
+) || [];
+
+cart.push(product);
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+
 }else{
 
 showToast(

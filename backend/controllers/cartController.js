@@ -141,6 +141,10 @@ addToCart,
 
 getCart,
 
-removeItem
+removeItem,
+
+increaseQuantity,
+
+decreaseQuantity
 
 };
