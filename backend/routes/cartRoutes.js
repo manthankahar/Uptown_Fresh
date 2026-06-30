@@ -17,10 +17,11 @@ increaseQuantity,
 
 decreaseQuantity
 
-} =
-require("../controllers/cartController");
+} = require("../controllers/cartController");
 
+// =========================
 // Add Product To Cart
+// =========================
 
 router.post(
 
@@ -32,7 +33,9 @@ addToCart
 
 );
 
+// =========================
 // Get User Cart
+// =========================
 
 router.get(
 
@@ -44,7 +47,9 @@ getCart
 
 );
 
+// =========================
 // Remove Item
+// =========================
 
 router.delete(
 
@@ -56,7 +61,9 @@ removeItem
 
 );
 
+// =========================
 // Increase Quantity
+// =========================
 
 router.put(
 
@@ -68,7 +75,9 @@ increaseQuantity
 
 );
 
+// =========================
 // Decrease Quantity
+// =========================
 
 router.put(
 
@@ -81,95 +90,3 @@ decreaseQuantity
 );
 
 module.exports = router;
-
-// =========================
-// Increase Quantity
-// =========================
-
-const increaseQuantity = async (req, res) => {
-
-try{
-
-const cart = await Cart.findOne({
-userId:req.user.id
-});
-
-const item = cart.products.find(
-
-item => item.productId.toString() === req.params.id
-
-);
-
-if(item){
-
-item.quantity += 1;
-
-}
-
-await cart.save();
-
-res.json({
-message:"Quantity Increased"
-});
-
-}catch(error){
-
-res.status(500).json({
-message:error.message
-});
-
-}
-
-};
-
-// =========================
-// Decrease Quantity
-// =========================
-
-const decreaseQuantity = async (req, res) => {
-
-try{
-
-const cart = await Cart.findOne({
-userId:req.user.id
-});
-
-const item = cart.products.find(
-
-item => item.productId.toString() === req.params.id
-
-);
-
-if(item){
-
-if(item.quantity > 1){
-
-item.quantity -= 1;
-
-}else{
-
-cart.products = cart.products.filter(
-
-p => p.productId.toString() !== req.params.id
-
-);
-
-}
-
-}
-
-await cart.save();
-
-res.json({
-message:"Quantity Updated"
-});
-
-}catch(error){
-
-res.status(500).json({
-message:error.message
-});
-
-}
-
-};

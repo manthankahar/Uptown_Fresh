@@ -135,6 +135,115 @@ message: error.message
 
 };
 
+
+// =========================
+// Increase Quantity
+// =========================
+
+const increaseQuantity = async (req, res) => {
+
+try{
+
+const cart = await Cart.findOne({
+userId:req.user.id
+});
+
+if(!cart){
+
+return res.status(404).json({
+message:"Cart Not Found"
+});
+
+}
+
+const item = cart.products.find(
+
+item => item.productId.toString() === req.params.id
+
+);
+
+if(item){
+
+item.quantity += 1;
+
+}
+
+await cart.save();
+
+res.json({
+message:"Quantity Increased"
+});
+
+}catch(error){
+
+res.status(500).json({
+message:error.message
+});
+
+}
+
+};
+
+// =========================
+// Decrease Quantity
+// =========================
+
+const decreaseQuantity = async (req, res) => {
+
+try{
+
+const cart = await Cart.findOne({
+userId:req.user.id
+});
+
+if(!cart){
+
+return res.status(404).json({
+message:"Cart Not Found"
+});
+
+}
+
+const item = cart.products.find(
+
+item => item.productId.toString() === req.params.id
+
+);
+
+if(item){
+
+if(item.quantity > 1){
+
+item.quantity -= 1;
+
+}else{
+
+cart.products = cart.products.filter(
+
+p => p.productId.toString() !== req.params.id
+
+);
+
+}
+
+}
+
+await cart.save();
+
+res.json({
+message:"Quantity Updated"
+});
+
+}catch(error){
+
+res.status(500).json({
+message:error.message
+});
+
+}
+
+};
+
 module.exports = {
 
 addToCart,

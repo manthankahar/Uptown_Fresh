@@ -479,6 +479,68 @@ loadCart();
 
 }
 
+// =========================
+// Increase Quantity
+// =========================
+
+async function increaseQuantity(id){
+
+const token =
+localStorage.getItem("token");
+
+await fetch(
+
+`http://localhost:5000/api/cart/increase/${id}`,
+
+{
+
+method:"PUT",
+
+headers:{
+
+Authorization:`Bearer ${token}`
+
+}
+
+}
+
+);
+
+loadCart();
+
+}
+
+// =========================
+// Decrease Quantity
+// =========================
+
+async function decreaseQuantity(id){
+
+const token =
+localStorage.getItem("token");
+
+await fetch(
+
+`http://localhost:5000/api/cart/decrease/${id}`,
+
+{
+
+method:"PUT",
+
+headers:{
+
+Authorization:`Bearer ${token}`
+
+}
+
+}
+
+);
+
+loadCart();
+
+}
+
 loadCart();
 
 </script>
