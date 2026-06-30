@@ -146,6 +146,11 @@ path.join(__dirname, "views")
 );
 
 // Static Files (CSS, JS, Images)
+
+console.log(
+path.join(__dirname,"../frontend")
+);
+
 app.use(
 express.static(
 path.join(__dirname, "../frontend")
