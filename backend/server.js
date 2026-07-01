@@ -183,8 +183,8 @@ res.render("admin");
 });
 
 
-app.get("/add-product",(req,res)=>{
-res.render("add-product");
+app.get("/addProduct",(req,res)=>{
+res.render("addProduct");
 });
 
 // Upload Folder
