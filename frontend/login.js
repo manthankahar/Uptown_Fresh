@@ -59,7 +59,7 @@ if (response.ok) {
   );
 
   window.location.href =
-    "index.html";
+    "products";
 
 } else {
 
