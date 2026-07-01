@@ -34,19 +34,47 @@
 <form>
 
 <input
-type="email"
-placeholder="Enter Email"
+type="text"
+id="loginField"
+placeholder="Enter Email or Mobile Number"
 required
 >
+
+<div style="position:relative;">
 
 <input
 type="password"
+id="password"
 placeholder="Enter Password"
 required
+style="padding-right:50px;"
 >
 
-<button type="submit">
+<span
+id="togglePassword"
+style="
+position:absolute;
+right:15px;
+top:50%;
+transform:translateY(-50%);
+cursor:pointer;
+font-size:18px;
+"
+>
+
+👁
+
+</span>
+
+</div>
+
+<button
+type="submit"
+id="loginBtn"
+>
+
 Login
+
 </button>
 
 </form>
@@ -54,6 +82,21 @@ Login
 <p style="margin-top:15px;text-align:center;">
 Don't have an account?
 <a href="/signup">Signup</a>
+</p>
+
+<p
+style="
+text-align:center;
+margin-top:10px;
+"
+>
+
+<a href="/forgot-password">
+
+Forgot Password?
+
+</a>
+
 </p>
 
 </div>

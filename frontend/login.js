@@ -1,81 +1,103 @@
 const form = document.querySelector("form");
 
-form.addEventListener("submit", async (e) => {
+const togglePassword =
+document.getElementById("togglePassword");
+
+const password =
+document.getElementById("password");
+
+togglePassword.addEventListener("click",()=>{
+
+password.type =
+password.type==="password"
+?
+"text"
+:
+"password";
+
+});
+
+form.addEventListener("submit",async(e)=>{
 
 e.preventDefault();
 
-const email =
-document.querySelector(
-'input[type="email"]'
-).value;
+const login =
+document.getElementById("loginField").value;
 
 const password =
-document.querySelector(
-'input[type="password"]'
-).value;
+document.getElementById("password").value;
 
-try {
+const loginBtn =
+document.getElementById("loginBtn");
 
-const response = await fetch(
-  "http://localhost:5000/api/auth/login",
-  {
-    method: "POST",
+loginBtn.disabled=true;
 
-    headers: {
-      "Content-Type": "application/json"
-    },
+loginBtn.innerText="Logging In...";
 
-    body: JSON.stringify({
-      email,
-      password
-    })
-  }
+try{
+
+const response =
+await fetch(
+"http://localhost:5000/api/auth/login",
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+login,
+password
+
+})
+
+}
+
 );
 
 const data =
-  await response.json();
+await response.json();
 
-console.log(data);
+if(response.ok){
 
-if (response.ok) {
+localStorage.setItem(
+"token",
+data.token
+);
 
-  localStorage.setItem(
-    "token",
-    data.token
-  );
+localStorage.setItem(
+"userEmail",
+data.user.email
+);
 
-  localStorage.setItem(
-    "userEmail",
-    data.user.email
-  );
+localStorage.setItem(
+"userRole",
+data.user.role
+);
 
-  localStorage.setItem(
-    "userRole",
-    data.user.role
-  );
+alert("Login Successful");
 
-  alert(
-    "Login Successful"
-  );
+window.location.href="/products";
 
-  window.location.href =
-    "products";
+}else{
 
-} else {
-
-  alert(
-    data.message
-  );
+alert(data.message);
 
 }
 
-
-} catch (error) {
-
+}catch(error){
 
 console.log(error);
 
+alert("Something Went Wrong");
 
 }
+
+loginBtn.disabled=false;
+
+loginBtn.innerText="Login";
 
 });
