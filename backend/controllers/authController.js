@@ -8,7 +8,7 @@ const signup = async (req, res) => {
 
 try{
 
-const {name,email,mobile,password}=req.body;
+const { name, email, mobile, password } = req.body;
 
 // Email Check
 const emailExists =
@@ -64,7 +64,6 @@ message:error.message
 
 };
 
-// Login
 // Login
 const login = async (req,res)=>{
 

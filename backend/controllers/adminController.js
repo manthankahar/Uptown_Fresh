@@ -73,19 +73,19 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-module.exports = {
+// module.exports = {
 
-addProduct,
+// addProduct,
 
-getProducts,
+// getProducts,
 
-updateProduct,
+// updateProduct,
 
-deleteProduct,
+// deleteProduct,
 
-getDashboard
+// getDashboard
 
-};
+// };
 
 // ===============================
 // Dashboard
@@ -149,5 +149,19 @@ message:error.message
 });
 
 }
+
+};
+
+module.exports = {
+
+addProduct,
+
+getProducts,
+
+updateProduct,
+
+deleteProduct,
+
+getDashboard
 
 };
