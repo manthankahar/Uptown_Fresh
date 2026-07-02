@@ -1,4 +1,6 @@
 const Product = require("../models/product");
+const User = require("../models/user");
+const Order = require("../models/Order");
 
 // Add Product
 const addProduct = async (req, res) => {
@@ -72,8 +74,80 @@ const deleteProduct = async (req, res) => {
 };
 
 module.exports = {
-  addProduct,
-  getProducts,
-  updateProduct,
-  deleteProduct
+
+addProduct,
+
+getProducts,
+
+updateProduct,
+
+deleteProduct,
+
+getDashboard
+
+};
+
+// ===============================
+// Dashboard
+// ===============================
+
+const getDashboard = async (req,res)=>{
+
+try{
+
+const totalProducts =
+await Product.countDocuments();
+
+const totalUsers =
+await User.countDocuments();
+
+const totalOrders =
+await Order.countDocuments();
+
+const revenue =
+await Order.aggregate([
+
+{
+
+$group:{
+
+_id:null,
+
+totalRevenue:{
+$sum:"$totalPrice"
+}
+
+}
+
+}
+
+]);
+
+res.json({
+
+totalProducts,
+
+totalUsers,
+
+totalOrders,
+
+totalRevenue:
+revenue.length>0
+?
+revenue[0].totalRevenue
+:
+0
+
+});
+
+}catch(error){
+
+res.status(500).json({
+
+message:error.message
+
+});
+
+}
+
 };

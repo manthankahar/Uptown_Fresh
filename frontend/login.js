@@ -34,6 +34,9 @@ loginBtn.disabled=true;
 
 loginBtn.innerText="Logging In...";
 
+// Loader Start
+showLoader();
+
 try{
 
 const response =
@@ -61,6 +64,9 @@ password
 const data =
 await response.json();
 
+// Loader Stop
+hideLoader();
+
 if(response.ok){
 
 localStorage.setItem(
@@ -78,21 +84,39 @@ localStorage.setItem(
 data.user.role
 );
 
-alert("Login Successful");
+// Toast Success
+showToast(
+"Login Successful",
+"success"
+);
+
+// 1 Second pachi Redirect
+setTimeout(()=>{
 
 window.location.href="/products";
 
+},1000);
+
 }else{
 
-alert(data.message);
+showToast(
+data.message,
+"error"
+);
 
 }
 
 }catch(error){
 
+// Loader Stop
+hideLoader();
+
 console.log(error);
 
-alert("Something Went Wrong");
+showToast(
+"Something Went Wrong",
+"error"
+);
 
 }
 

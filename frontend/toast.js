@@ -1,10 +1,18 @@
-function showToast(message,type="success"){
+function showToast(message, type = "success") {
 
-let toast=document.createElement("div");
+const oldToast = document.querySelector(".toast");
 
-toast.className="toast "+type;
+if(oldToast){
 
-toast.innerHTML=message;
+oldToast.remove();
+
+}
+
+const toast = document.createElement("div");
+
+toast.className = `toast ${type}`;
+
+toast.innerHTML = message;
 
 document.body.appendChild(toast);
 
@@ -22,7 +30,7 @@ setTimeout(()=>{
 
 toast.remove();
 
-},400);
+},500);
 
 },3000);
 

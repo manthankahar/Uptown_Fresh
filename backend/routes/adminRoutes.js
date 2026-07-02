@@ -17,25 +17,27 @@ const upload =
 );
 
 // admin
-const app = express();
-app.use(
-  "/api/admin",
-  require("./routes/adminRoutes")
-);
 
 const {
-  addProduct,
-  getProducts,
-  updateProduct,
-  deleteProduct
-} = require("../controllers/adminController");
+addProduct,
+
+getProducts,
+
+updateProduct,
+
+deleteProduct,
+
+getDashboard
+
+} =
+require("../controllers/adminController");
 
 // Dashboard
-router.get("/dashboard", (req, res) => {
-  res.json({
-    message: "Admin Dashboard"
-  });
-});
+
+router.get(
+"/dashboard",
+getDashboard
+);
 
 // Products
 router.post("/products", addProduct);

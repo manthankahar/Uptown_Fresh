@@ -187,6 +187,18 @@ app.get("/addProduct",(req,res)=>{
 res.render("addProduct");
 });
 
+app.use(
+"/api/admin",
+require("./routes/adminRoutes")
+);
+
+
+app.get("/forgot-password",(req,res)=>{
+
+res.render("forgotPassword");
+
+});
+
 // Upload Folder
 app.use(
 "/uploads",
