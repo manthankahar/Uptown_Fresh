@@ -78,20 +78,41 @@ function displayProducts(products) {
 
     <p><b>Category :</b> ${product.category}</p>
 
-    <p style="color:green;">
-        <b>Stock :</b> ${product.stock}
-    </p>
+<p>
+<b>Price :</b> ₹${product.price}
+</p>
 
-    <h3 style="color:#27ae60;">
-        ₹${product.price}
-    </h3>
+${
+product.stock > 0
 
-    <button
-        class="btn"
-        onclick='addToCart(${JSON.stringify(product)})'
-    >
-        🛒 Add To Cart
-    </button>
+?
+
+`<p style="color:green;font-weight:bold;">
+✅ In Stock (${product.stock} Left)
+</p>
+
+<button
+class="btn"
+onclick='addToCart(${JSON.stringify(product)})'
+>
+🛒 Add To Cart
+</button>`
+
+:
+
+`<p style="color:red;font-weight:bold;">
+❌ Out Of Stock
+</p>
+
+<button
+class="btn"
+disabled
+style="background:#999;cursor:not-allowed;"
+>
+Out Of Stock
+</button>`
+
+}
 
     ${
         role === "admin"

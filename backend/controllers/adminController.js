@@ -73,19 +73,6 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-// module.exports = {
-
-// addProduct,
-
-// getProducts,
-
-// updateProduct,
-
-// deleteProduct,
-
-// getDashboard
-
-// };
 
 // ===============================
 // Dashboard

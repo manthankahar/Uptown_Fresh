@@ -1,5 +1,6 @@
 const Order = require("../models/Order");
 const Cart = require("../models/Cart");
+const Product = require("../models/product");
 
 // =====================
 // Place Order
@@ -51,6 +52,32 @@ totalPrice:total
 });
 
 await order.save();
+
+// Reduce Product Stock
+
+for(const item of cart.products){
+
+const product =
+await Product.findById(item.productId._id);
+
+if(product){
+
+// Stock negative na thay
+if(product.stock >= item.quantity){
+
+product.stock -= item.quantity;
+
+}else{
+
+product.stock = 0;
+
+}
+
+await product.save();
+
+}
+
+}
 
 cart.products=[];
 
