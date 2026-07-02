@@ -35,7 +35,7 @@ loginBtn.disabled=true;
 loginBtn.innerText="Logging In...";
 
 // Loader Start
-showLoader();
+// showLoader();
 
 try{
 
@@ -64,8 +64,11 @@ password
 const data =
 await response.json();
 
+console.log("Status:", response.status);
+console.log("Response:", data);
+
 // Loader Stop
-hideLoader();
+// hideLoader();
 
 if(response.ok){
 
@@ -85,10 +88,12 @@ data.user.role
 );
 
 // Toast Success
-showToast(
-"Login Successful",
-"success"
-);
+// showToast(
+// "Login Successful",
+// "success"
+// );
+
+console.log("Login Success");
 
 // 1 Second pachi Redirect
 setTimeout(()=>{
