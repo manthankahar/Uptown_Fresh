@@ -116,6 +116,8 @@ async function(e){
 
 e.preventDefault();
 
+try{
+
 const token =
 localStorage.getItem("token");
 
@@ -132,24 +134,19 @@ headers:{
 
 "Content-Type":"application/json",
 
-Authorization:
-`Bearer ${token}`
+Authorization:`Bearer ${token}`
 
 },
 
 body:JSON.stringify({
 
-name:
-document.getElementById("name").value,
+name:document.getElementById("name").value,
 
-phone:
-document.getElementById("phone").value,
+phone:document.getElementById("phone").value,
 
-address:
-document.getElementById("address").value,
+address:document.getElementById("address").value,
 
-payment:
-document.getElementById("payment").value
+payment:document.getElementById("payment").value
 
 })
 
@@ -160,11 +157,40 @@ document.getElementById("payment").value
 const data =
 await response.json();
 
-alert(data.message);
+if(response.ok){
+
+showToast(
+data.message,
+"success"
+);
 
 localStorage.removeItem("cart");
 
+setTimeout(()=>{
+
 window.location.href="/orders";
+
+},1000);
+
+}else{
+
+showToast(
+data.message,
+"error"
+);
+
+}
+
+}catch(error){
+
+console.log(error);
+
+showToast(
+"Something Went Wrong",
+"error"
+);
+
+}
 
 });
 

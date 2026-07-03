@@ -145,10 +145,16 @@ localStorage.removeItem("userEmail");
 localStorage.removeItem("userRole");
 localStorage.removeItem("cart");
 
+showToast(
+"Logout Successful",
+"success"
+);
 
-alert("Logout Successful");
+setTimeout(()=>{
 
 window.location.replace("/login");
+
+},1000);
 
 }
 

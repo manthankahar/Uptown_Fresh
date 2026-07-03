@@ -34,8 +34,7 @@ loginBtn.disabled=true;
 
 loginBtn.innerText="Logging In...";
 
-// Loader Start
-// showLoader();
+showLoader();
 
 try{
 
@@ -52,7 +51,7 @@ headers:{
 
 body:JSON.stringify({
 
-login,
+email:login,
 password
 
 })
@@ -64,11 +63,7 @@ password
 const data =
 await response.json();
 
-console.log("Status:", response.status);
-console.log("Response:", data);
-
-// Loader Stop
-// hideLoader();
+hideLoader();
 
 if(response.ok){
 
@@ -87,15 +82,11 @@ localStorage.setItem(
 data.user.role
 );
 
-// Toast Success
-// showToast(
-// "Login Successful",
-// "success"
-// );
+showToast(
+"Login Successful",
+"success"
+);
 
-console.log("Login Success");
-
-// 1 Second pachi Redirect
 setTimeout(()=>{
 
 window.location.href="/products";
@@ -113,7 +104,6 @@ data.message,
 
 }catch(error){
 
-// Loader Stop
 hideLoader();
 
 console.log(error);

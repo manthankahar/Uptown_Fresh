@@ -26,6 +26,11 @@ document.getElementById("totalRevenue").innerText =
 
 console.log(error);
 
+showToast(
+"Failed To Load Dashboard",
+"error"
+);
+
 }
 
 }

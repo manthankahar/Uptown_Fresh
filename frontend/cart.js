@@ -7,7 +7,10 @@ localStorage.getItem("token");
 
 if(!token){
 
-alert("Please Login First");
+showToast(
+"Please Login First",
+"warning"
+);
 
 window.location.href="/login";
 
@@ -45,11 +48,17 @@ await response.json();
 
 if(response.ok){
 
-alert("✅ Product Added To Cart");
+showToast(
+"Product Added To Cart",
+"success"
+);
 
 }else{
 
-alert(data.message);
+showToast(
+data.message,
+"error"
+);
 
 }
 
@@ -57,7 +66,10 @@ alert(data.message);
 
 console.log(error);
 
-alert("Something Went Wrong");
+showToast(
+"Something Went Wrong",
+"error"
+);
 
 }
 

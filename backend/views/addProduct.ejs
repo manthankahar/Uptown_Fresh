@@ -89,14 +89,16 @@ const authToken = localStorage.getItem("token");
 
 if(!authToken){
 
-alert("Please Login First");
+showToast(
+"Please Login First",
+"warning"
+);
+
+setTimeout(()=>{
 
 window.location.href="/login";
 
-if (!authToken) {
-    alert("Please Login First");
-    window.location.href = "/login";
-}
+},1000);
 
 }
 
@@ -121,23 +123,24 @@ headers:{
 Authorization:`Bearer ${authToken}`
 },
 
-body: JSON.stringify({
+body:JSON.stringify({
 
-name: document.getElementById("name").value,
+name:document.getElementById("name").value,
 
-price: document.getElementById("price").value,
+price:document.getElementById("price").value,
 
-category: document.getElementById("category").value,
+category:document.getElementById("category").value,
 
-stock: document.getElementById("stock").value,
+stock:document.getElementById("stock").value,
 
-image: document.getElementById("image").value,
+image:document.getElementById("image").value,
 
-description: document.getElementById("description").value
+description:document.getElementById("description").value
 
 })
 
 }
+
 );
 
 const data =
@@ -145,17 +148,22 @@ await response.json();
 
 if(response.ok){
 
-alert(
-"Product Added Successfully"
+showToast(
+"Product Added Successfully",
+"success"
 );
 
-window.location.href =
-"/products";
+setTimeout(()=>{
+
+window.location.href="/products";
+
+},1000);
 
 }else{
 
-alert(
-data.message
+showToast(
+data.message,
+"error"
 );
 
 }
@@ -164,8 +172,9 @@ data.message
 
 console.log(error);
 
-alert(
-"Something Went Wrong"
+showToast(
+"Something Went Wrong",
+"error"
 );
 
 }

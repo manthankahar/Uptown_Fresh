@@ -11,11 +11,21 @@ const {
   getProducts,
   addProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  restockProduct
 } = require("../controllers/productController");
 
-router.get("/", getProducts);
+// ===============================
+// Get All Products
+// ===============================
+router.get(
+  "/",
+  getProducts
+);
 
+// ===============================
+// Add Product
+// ===============================
 router.post(
   "/",
   authMiddleware,
@@ -23,6 +33,9 @@ router.post(
   addProduct
 );
 
+// ===============================
+// Update Product
+// ===============================
 router.put(
   "/:id",
   authMiddleware,
@@ -30,6 +43,19 @@ router.put(
   updateProduct
 );
 
+// ===============================
+// Restock Product
+// ===============================
+router.put(
+  "/:id/restock",
+  authMiddleware,
+  adminMiddleware,
+  restockProduct
+);
+
+// ===============================
+// Delete Product
+// ===============================
 router.delete(
   "/:id",
   authMiddleware,

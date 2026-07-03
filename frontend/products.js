@@ -87,31 +87,35 @@ product.stock > 0
 
 ?
 
-`<p style="color:green;font-weight:bold;">
-✅ In Stock (${product.stock} Left)
-</p>
-
-<button
-class="btn"
-onclick='addToCart(${JSON.stringify(product)})'
->
-🛒 Add To Cart
-</button>`
+`<span class="stock-green">
+✅ ${product.stock} Left
+</span>`
 
 :
 
-`<p style="color:red;font-weight:bold;">
+`
+<span class="stock-red">
 ❌ Out Of Stock
-</p>
+</span>
+
+${
+role === "admin"
+?
+`
+<br><br>
 
 <button
 class="btn"
-disabled
-style="background:#999;cursor:not-allowed;"
+style="background:#3498db;"
+onclick="restockProduct('${product._id}')"
 >
-Out Of Stock
-</button>`
-
+➕ Restock
+</button>
+`
+:
+""
+}
+`
 }
 
     ${
@@ -200,9 +204,16 @@ async function addToCart(product) {
 
         if (!token) {
 
-            alert("Please Login First");
+            showToast(
+               "Please Login First",
+                 "warning"
+);
 
-            window.location.href = "/login";
+setTimeout(()=>{
+
+window.location.href="/login";
+
+},1000);
 
             return;
 
@@ -224,13 +235,19 @@ async function addToCart(product) {
 
         const data = await response.json();
 
-        alert(data.message);
+       showToast(
+data.message,
+"success"
+);
 
     } catch (error) {
 
         console.log(error);
 
-        alert("Something Went Wrong");
+       showToast(
+"Something Went Wrong",
+"error"
+);
 
     }
 
@@ -268,14 +285,75 @@ async function deleteProduct(id) {
     const data =
         await response.json();
 
-    alert(data.message);
+    showToast(
+data.message,
+"success"
+);
 
     loadProducts();
 
 }
 
-// ===============================
-// Start
-// ===============================
+async function restockProduct(id){
+
+const stock =
+prompt("Enter New Stock Quantity");
+
+if(!stock) return;
+
+const token =
+localStorage.getItem("token");
+
+try{
+
+const response =
+await fetch(
+
+`http://localhost:5000/api/products/${id}/restock`,
+
+{
+
+method:"PUT",
+
+headers:{
+
+"Content-Type":"application/json",
+
+Authorization:`Bearer ${token}`
+
+},
+
+body:JSON.stringify({
+
+stock
+
+})
+
+}
+
+);
+
+const data =
+await response.json();
+
+showToast(
+data.message,
+"success"
+);
+
+loadProducts();
+
+}catch(error){
+
+console.log(error);
+
+showToast(
+"Something Went Wrong",
+"error"
+);
+
+}
+
+}
 
 loadProducts();

@@ -245,9 +245,16 @@ localStorage.getItem("token");
 
 if(!token){
 
-alert("Please Login First");
+showToast(
+"Please Login First",
+"warning"
+);
+
+setTimeout(()=>{
 
 window.location.href="/login";
+
+},1000);
 
 return;
 

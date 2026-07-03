@@ -45,9 +45,12 @@ email
 const data =
 await response.json();
 
-alert(data.message);
-
 if(response.ok){
+
+showToast(
+data.message,
+"success"
+);
 
 localStorage.setItem(
 
@@ -57,7 +60,18 @@ email
 
 );
 
+setTimeout(()=>{
+
 window.location.href="/verify-otp";
+
+},1000);
+
+}else{
+
+showToast(
+data.message,
+"error"
+);
 
 }
 
@@ -65,7 +79,10 @@ window.location.href="/verify-otp";
 
 console.log(error);
 
-alert("Something Went Wrong");
+showToast(
+"Something Went Wrong",
+"error"
+);
 
 }
 
