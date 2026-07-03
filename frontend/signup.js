@@ -55,11 +55,9 @@ return;
 
 }
 
-showLoader();
-
 try{
 
-const response=await fetch(
+const response = await fetch(
 "http://localhost:5000/api/auth/signup",
 {
 
@@ -82,9 +80,7 @@ password
 
 );
 
-const data=await response.json();
-
-hideLoader();
+const data = await response.json();
 
 if(response.ok){
 
@@ -109,8 +105,6 @@ data.message,
 }
 
 }catch(error){
-
-hideLoader();
 
 console.log(error);
 

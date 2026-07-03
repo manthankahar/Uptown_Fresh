@@ -34,8 +34,6 @@ loginBtn.disabled=true;
 
 loginBtn.innerText="Logging In...";
 
-showLoader();
-
 try{
 
 const response =
@@ -62,9 +60,10 @@ password
 
 const data =
 await response.json();
-
-hideLoader();
-
+console.log("Status:", response.status);
+console.log("Status:", response.status);
+console.log("Message:", data.message);
+console.log("Full Response:", data);
 if(response.ok){
 
 localStorage.setItem(
@@ -103,8 +102,6 @@ data.message,
 }
 
 }catch(error){
-
-hideLoader();
 
 console.log(error);
 

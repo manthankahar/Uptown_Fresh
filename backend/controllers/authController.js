@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 // Signup
-// Signup
 const signup = async (req, res) => {
 
 try{
@@ -65,20 +64,29 @@ message:error.message
 };
 
 // Login
-const login = async (req,res)=>{
+const login = async (req, res) => {
+
+  throw new Error("LOGIN FUNCTION HIT");
 
 try{
 
-const {email,password}=req.body;
+console.log("Request Body:", req.body);
+
+const { email, password } = req.body;
+
+console.log("Login Input:", email);
+console.log("Entered Password:", password);
 
 const user = await User.findOne({
 
 $or:[
-{email:email},
-{mobile:email}
+{ email: email },
+{ mobile: email }
 ]
 
 });
+
+console.log("User Found:", user);
 
 if(!user){
 
@@ -98,11 +106,13 @@ user.password
 
 );
 
+console.log("Password Match:", match);
+
 if(!match){
 
 return res.status(400).json({
 
-message:"Invalid Password"
+message:"Wrong Password"
 
 });
 
@@ -111,11 +121,11 @@ message:"Invalid Password"
 const token =
 jwt.sign(
 
-{id:user._id},
+{ id:user._id },
 
 process.env.JWT_SECRET,
 
-{expiresIn:"7d"}
+{ expiresIn:"7d" }
 
 );
 
@@ -131,6 +141,8 @@ user
 
 }catch(error){
 
+console.log(error);
+
 res.status(500).json({
 
 message:error.message
@@ -139,9 +151,4 @@ message:error.message
 
 }
 
-};
-
-module.exports = {
-  signup,
-  login
 };

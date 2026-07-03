@@ -62,15 +62,15 @@ password:hashedPassword
 // Login Route
 router.post("/login", async (req, res) => {
   try {
-    const { login, password } = req.body;
+    const { email, password } = req.body;
 
     const user = await User.findOne({
 
 $or: [
 
-{ email: login },
+{ email: email },
 
-{ mobile: login }
+{ mobile: email }
 
 ]
 
