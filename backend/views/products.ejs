@@ -105,6 +105,34 @@ Loading Products...
 
 </div>
 
+<div id="stockModal" class="stock-modal">
+
+<div class="stock-box">
+
+<h2>Update Stock</h2>
+
+<input
+type="number"
+id="stockValue"
+min="0"
+>
+
+<div class="stock-buttons">
+
+<button onclick="updateStock()">
+Save
+</button>
+
+<button onclick="closeStockModal()">
+Cancel
+</button>
+
+</div>
+
+</div>
+
+</div>
+
 <%- include("partials/footer") %>
 
 <script src="toast.js"></script>

@@ -40,23 +40,20 @@ async function loadProducts() {
 
 function displayProducts(products) {
 
-    const container =
-        document.getElementById("products-container");
+    const container = document.getElementById("products-container");
 
     if (!products || products.length === 0) {
 
         container.innerHTML = `
-            <h2 style="text-align:center;">
-                No Products Found
-            </h2>
+        <h2 style="text-align:center;">
+            No Products Found
+        </h2>
         `;
 
         return;
-
     }
 
-    const role =
-        localStorage.getItem("userRole");
+    const role = localStorage.getItem("userRole");
 
     let html = "";
 
@@ -66,37 +63,41 @@ function displayProducts(products) {
 
 <div class="product-card">
 
-    <img
-        src="${product.image}"
-        class="product-image"
-        alt="${product.name}"
-    >
+<img
+src="${product.image}"
+class="product-image"
+alt="${product.name}"
+>
 
-    <h2>${product.name}</h2>
+<h2>${product.name}</h2>
 
-    <p>${product.description}</p>
+<p>${product.description}</p>
 
-    <p><b>Category :</b> ${product.category}</p>
+<p><b>Category :</b> ${product.category}</p>
 
-<p>
-<b>Price :</b> ₹${product.price}
-</p>
+<p><b>Price :</b> ₹${product.price}</p>
 
 ${
 product.stock > 0
-
 ?
-
 `<span class="stock-green">
 ✅ ${product.stock} Left
 </span>`
-
 :
-
-`
-<span class="stock-red">
+`<span class="stock-red">
 ❌ Out Of Stock
-</span>
+</span>`
+}
+
+<br><br>
+
+<button
+class="btn"
+onclick='addToCart(${JSON.stringify(product)})'
+${product.stock <= 0 ? "disabled" : ""}
+>
+🛒 Add To Cart
+</button>
 
 ${
 role === "admin"
@@ -107,32 +108,24 @@ role === "admin"
 <button
 class="btn"
 style="background:#3498db;"
-onclick="restockProduct('${product._id}')"
+onclick="openStockModal('${product._id}',${product.stock})"
 >
-➕ Restock
+➕ Update Stock
+</button>
+
+<br><br>
+
+<button
+class="btn"
+style="background:red;"
+onclick="deleteProduct('${product._id}')"
+>
+🗑 Delete
 </button>
 `
 :
 ""
 }
-`
-}
-
-    ${
-        role === "admin"
-        ?
-        `
-        <button
-            class="btn"
-            style="background:red;margin-top:10px;"
-            onclick="deleteProduct('${product._id}')"
-        >
-            Delete
-        </button>
-        `
-        :
-        ""
-    }
 
 </div>
 
@@ -189,7 +182,11 @@ document
 
     displayProducts(filtered);
 
+
 });
+
+
+
 
 // ===============================
 // Add To Cart
@@ -294,22 +291,35 @@ data.message,
 
 }
 
-async function restockProduct(id){
+let currentProductId = "";
 
-const stock =
-prompt("Enter New Stock Quantity");
+function openStockModal(id, stock){
 
-if(!stock) return;
+currentProductId = id;
 
-const token =
-localStorage.getItem("token");
+document.getElementById("stockValue").value = stock;
+
+document.getElementById("stockModal").style.display="flex";
+
+}
+
+function closeStockModal(){
+
+document.getElementById("stockModal").style.display="none";
+
+}
+
+async function updateStock(){
+
+const token = localStorage.getItem("token");
+
+const stock = document.getElementById("stockValue").value;
 
 try{
 
-const response =
-await fetch(
+const response = await fetch(
 
-`http://localhost:5000/api/products/${id}/restock`,
+`http://localhost:5000/api/products/${currentProductId}/restock`,
 
 {
 
@@ -333,13 +343,11 @@ stock
 
 );
 
-const data =
-await response.json();
+const data = await response.json();
 
-showToast(
-data.message,
-"success"
-);
+showToast(data.message,"success");
+
+closeStockModal();
 
 loadProducts();
 
@@ -347,10 +355,7 @@ loadProducts();
 
 console.log(error);
 
-showToast(
-"Something Went Wrong",
-"error"
-);
+showToast("Something Went Wrong","error");
 
 }
 
