@@ -1,5 +1,3 @@
-const token = localStorage.getItem("token");
-
 async function loadOrders(){
 
 try{
@@ -11,7 +9,7 @@ const response = await fetch(
 {
 
 headers:{
-Authorization:`Bearer ${token}`
+Authorization:`Bearer ${localStorage.getItem("token")}`
 }
 
 }
@@ -19,6 +17,8 @@ Authorization:`Bearer ${token}`
 );
 
 const orders = await response.json();
+
+console.log("Orders =>", orders);
 
 const container =
 document.getElementById("ordersContainer");
@@ -52,15 +52,11 @@ html += `
 <div class="product-card">
 
 <h2>
-
-👤 ${order.userId.username}
-
+👤 ${order.userId ? order.userId.name : "Unknown User"}
 </h2>
 
 <p>
-
-📧 ${order.userId.email}
-
+📧 ${order.userId ? order.userId.email : "No Email"}
 </p>
 
 <hr>
@@ -164,6 +160,10 @@ showToast(
 
 async function changeStatus(id,status){
 
+
+    console.log("changeStatus called");
+    console.log(id);
+    console.log(status);
 const response = await fetch(
 
 `http://localhost:5000/api/orders/status/${id}`,
@@ -176,7 +176,7 @@ headers:{
 
 "Content-Type":"application/json",
 
-Authorization:`Bearer ${token}`
+Authorization:`Bearer ${localStorage.getItem("token")}`
 
 },
 
@@ -226,7 +226,7 @@ method:"DELETE",
 
 headers:{
 
-Authorization:`Bearer ${token}`
+Authorization:`Bearer ${localStorage.getItem("token")}`
 
 }
 
