@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>My Orders</title>
 
 <link rel="stylesheet" href="/css/style.css">
+<link rel="icon" href="data:,">
 
 </head>
 
@@ -26,55 +30,57 @@ Loading...
 
 </div>
 
+<script src="/toast.js"></script>
+
 <script>
 
-const token =
-localStorage.getItem("token");
+// const token = localStorage.getItem("token");
 
-fetch(
+async function loadOrders(){
 
+try{
+
+const response = await fetch(
 "http://localhost:5000/api/orders/my",
-
 {
-
 headers:{
-
-Authorization:
-`Bearer ${token}`
-
+Authorization:`Bearer ${localStorage.getItem("token")}`
 }
-
 }
+);
 
-)
+const orders = await response.json();
 
-.then(res=>res.json())
+let html = "";
 
-.then(data=>{
+if(!orders.length){
 
-let html="";
-
-if(data.length===0){
-
-html=`
+html = `
 
 <div
 style="
-text-align:center;
 width:100%;
+text-align:center;
+padding:60px;
 "
 >
 
 <h2>
-No Orders Yet
+📦 No Orders Yet
 </h2>
+
+<p>
+Start Shopping Fresh Products
+</p>
+
+<br>
 
 <a
 href="/products"
 class="btn"
 >
 
-Shop Now
+🛒 Shop Now
 
 </a>
 
@@ -84,53 +90,103 @@ Shop Now
 
 }else{
 
-data.forEach(order=>{
+orders.forEach(order=>{
 
-html+=`
+let productsHTML = "";
 
-<div class="card">
+order.products.forEach(item=>{
+
+productsHTML += `
+
+<li>
+
+${item.productId.name}
+
+&nbsp;
+
+<b>x${item.quantity}</b>
+
+</li>
+
+`;
+
+});
+
+html += `
+
+<div class="product-card">
 
 <h2>
 
-Order
+🧾 Order
 
 </h2>
 
+<hr>
+
 <p>
 
-Status :
-<b
+<b>Status :</b>
+
+<span
 style="
 color:green;
+font-weight:bold;
 "
 >
 
 ${order.status}
 
-</b>
+</span>
 
 </p>
 
 <p>
 
-Total :
+<b>Total :</b>
+
 ₹${order.totalPrice}
 
 </p>
 
 <p>
 
-Items :
+<b>Items :</b>
+
 ${order.products.length}
 
 </p>
 
 <p>
 
-Date :
-${new Date(order.createdAt).toLocaleDateString()}
+<b>Date :</b>
+
+${new Date(order.createdAt).toLocaleString()}
 
 </p>
+
+<br>
+
+<h3>
+
+Products
+
+</h3>
+
+<ul>
+
+${productsHTML}
+
+</ul>
+
+<button
+class="btn"
+onclick="downloadInvoice('${order._id}')"
+>
+
+🧾 Download Invoice
+
+</button>
 
 </div>
 
@@ -140,11 +196,68 @@ ${new Date(order.createdAt).toLocaleDateString()}
 
 }
 
-document.getElementById(
-"orders"
-).innerHTML=html;
+document.getElementById("orders").innerHTML = html;
 
-});
+}catch(error){
+
+console.log(error);
+
+showToast(
+"Unable To Load Orders",
+"error"
+);
+
+}
+
+}
+
+loadOrders();
+
+async function downloadInvoice(orderId){
+
+const token = localStorage.getItem("token");
+
+const response = await fetch(
+
+`http://localhost:5000/api/orders/invoice/${orderId}`,
+
+{
+
+headers:{
+Authorization:`Bearer ${token}`
+}
+
+}
+
+);
+
+if(!response.ok){
+
+showToast("Invoice Download Failed","error");
+
+return;
+
+}
+
+const blob = await response.blob();
+
+const url = window.URL.createObjectURL(blob);
+
+const a = document.createElement("a");
+
+a.href = url;
+
+a.download = "Invoice.pdf";
+
+document.body.appendChild(a);
+
+a.click();
+
+a.remove();
+
+window.URL.revokeObjectURL(url);
+
+}
 
 </script>
 

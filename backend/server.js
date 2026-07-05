@@ -182,6 +182,10 @@ app.get("/admin", (req, res) => {
 res.render("admin");
 });
 
+app.get("/adminOrders",(req,res)=>{
+res.render("adminOrders");
+});
+
 
 app.get("/addProduct",(req,res)=>{
 res.render("addProduct");

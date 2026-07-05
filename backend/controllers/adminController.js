@@ -2,83 +2,128 @@ const Product = require("../models/product");
 const User = require("../models/user");
 const Order = require("../models/Order");
 
+// ==========================
 // Add Product
-const addProduct = async (req, res) => {
-  try {
-    const product = await Product.create(req.body);
+// ==========================
 
-    res.status(201).json({
-      message: "Product Added Successfully",
-      product
-    });
+const addProduct = async(req,res)=>{
 
-  } catch (error) {
-    res.status(500).json({
-      message: error.message
-    });
-  }
+try{
+
+const product =
+await Product.create(req.body);
+
+res.status(201).json({
+
+message:"Product Added Successfully",
+
+product
+
+});
+
+}catch(error){
+
+res.status(500).json({
+
+message:error.message
+
+});
+
+}
+
 };
 
-// Get All Products
-const getProducts = async (req, res) => {
-  try {
+// ==========================
+// Get Products
+// ==========================
 
-    const products = await Product.find();
+const getProducts = async(req,res)=>{
 
-    res.json(products);
+try{
 
-  } catch (error) {
-    res.status(500).json({
-      message: error.message
-    });
-  }
+const products =
+await Product.find();
+
+res.json(products);
+
+}catch(error){
+
+res.status(500).json({
+
+message:error.message
+
+});
+
+}
+
 };
 
+// ==========================
 // Update Product
-const updateProduct = async (req, res) => {
-  try {
+// ==========================
 
-    const product =
-      await Product.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        { new: true }
-      );
+const updateProduct = async(req,res)=>{
 
-    res.json(product);
+try{
 
-  } catch (error) {
-    res.status(500).json({
-      message: error.message
-    });
-  }
+const product =
+await Product.findByIdAndUpdate(
+
+req.params.id,
+
+req.body,
+
+{new:true}
+
+);
+
+res.json(product);
+
+}catch(error){
+
+res.status(500).json({
+
+message:error.message
+
+});
+
+}
+
 };
 
+// ==========================
 // Delete Product
-const deleteProduct = async (req, res) => {
-  try {
+// ==========================
 
-    await Product.findByIdAndDelete(
-      req.params.id
-    );
+const deleteProduct = async(req,res)=>{
 
-    res.json({
-      message: "Product Deleted Successfully"
-    });
+try{
 
-  } catch (error) {
-    res.status(500).json({
-      message: error.message
-    });
-  }
+await Product.findByIdAndDelete(req.params.id);
+
+res.json({
+
+message:"Product Deleted Successfully"
+
+});
+
+}catch(error){
+
+res.status(500).json({
+
+message:error.message
+
+});
+
+}
+
 };
 
-
-// ===============================
+// ==========================
 // Dashboard
-// ===============================
+// ==========================
 
-const getDashboard = async (req,res)=>{
+const getDashboard = async(req,res)=>{
 
 try{
 
@@ -101,7 +146,9 @@ $group:{
 _id:null,
 
 totalRevenue:{
+
 $sum:"$totalPrice"
+
 }
 
 }
@@ -112,17 +159,22 @@ $sum:"$totalPrice"
 
 res.json({
 
-totalProducts,
+products:totalProducts,
 
-totalUsers,
+users:totalUsers,
 
-totalOrders,
+orders:totalOrders,
 
-totalRevenue:
+revenue:
+
 revenue.length>0
+
 ?
+
 revenue[0].totalRevenue
+
 :
+
 0
 
 });
@@ -139,7 +191,7 @@ message:error.message
 
 };
 
-module.exports = {
+module.exports={
 
 addProduct,
 

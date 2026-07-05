@@ -90,23 +90,37 @@ Place Order
 
 <script>
 
-const cart =
-JSON.parse(
-localStorage.getItem("cart")
-) || [];
+async function loadCheckout(){
+
+const token = localStorage.getItem("token");
+
+const response = await fetch(
+"http://localhost:5000/api/cart",
+{
+headers:{
+Authorization:`Bearer ${token}`
+}
+}
+);
+
+const cart = await response.json();
 
 let total = 0;
 
-cart.forEach(item=>{
+cart.products.forEach(item=>{
 
-total += item.price;
+total += item.productId.price * item.quantity;
 
 });
 
-document.getElementById(
-"totalPrice"
-).innerText =
-"Total : ₹"+total;
+const delivery = total > 0 ? 50 : 0;
+
+document.getElementById("totalPrice").innerText =
+"Total : ₹" + (total + delivery);
+
+}
+
+loadCheckout();
 
 document
 .getElementById("checkoutForm")
@@ -156,6 +170,7 @@ payment:document.getElementById("payment").value
 
 const data =
 await response.json();
+console.log(data);
 
 if(response.ok){
 
@@ -164,7 +179,7 @@ data.message,
 "success"
 );
 
-localStorage.removeItem("cart");
+// localStorage.removeItem("cart");
 
 setTimeout(()=>{
 
@@ -195,6 +210,10 @@ showToast(
 });
 
 </script>
+
+<div id="toast"></div>
+
+<script src="/toast.js"></script>
 
 </body>
 

@@ -1,24 +1,18 @@
 const express = require("express");
 
 const router = express.Router();
+
 const upload =
-  require("../middleware/uploadMiddleware");
-  router.post(
-  "/upload",
-  upload.single("image"),
-  (req, res) => {
+require("../middleware/uploadMiddleware");
 
-    res.json({
-      imageUrl:
-        `http://localhost:5000/uploads/${req.file.filename}`
-    });
+const authMiddleware =
+require("../middleware/authMiddleware");
 
-  }
-);
-
-// admin
+const adminMiddleware =
+require("../middleware/adminMiddleware");
 
 const {
+
 addProduct,
 
 getProducts,
@@ -29,23 +23,101 @@ deleteProduct,
 
 getDashboard
 
-} =
-require("../controllers/adminController");
+} = require("../controllers/adminController");
 
-// Dashboard
+// ==========================
+// Upload Image
+// ==========================
 
-router.get(
-"/dashboard",
-getDashboard
+router.post(
+
+"/upload",
+
+authMiddleware,
+
+adminMiddleware,
+
+upload.single("image"),
+
+(req,res)=>{
+
+res.json({
+
+imageUrl:
+`http://localhost:5000/uploads/${req.file.filename}`
+
+});
+
+}
+
 );
 
+// ==========================
+// Dashboard
+// ==========================
+
+router.get(
+
+"/dashboard",
+
+authMiddleware,
+
+adminMiddleware,
+
+getDashboard
+
+);
+
+// ==========================
 // Products
-router.post("/products", addProduct);
+// ==========================
 
-router.get("/products", getProducts);
+router.post(
 
-router.put("/products/:id", updateProduct);
+"/products",
 
-router.delete("/products/:id", deleteProduct);
+authMiddleware,
+
+adminMiddleware,
+
+addProduct
+
+);
+
+router.get(
+
+"/products",
+
+authMiddleware,
+
+adminMiddleware,
+
+getProducts
+
+);
+
+router.put(
+
+"/products/:id",
+
+authMiddleware,
+
+adminMiddleware,
+
+updateProduct
+
+);
+
+router.delete(
+
+"/products/:id",
+
+authMiddleware,
+
+adminMiddleware,
+
+deleteProduct
+
+);
 
 module.exports = router;
