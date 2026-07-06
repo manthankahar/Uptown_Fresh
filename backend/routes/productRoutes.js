@@ -8,24 +8,38 @@ const adminMiddleware =
 require("../middleware/adminMiddleware");
 
 const {
+
   getProducts,
+  getProductById,
   addProduct,
   updateProduct,
   deleteProduct,
   restockProduct
+
 } = require("../controllers/productController");
 
 // ===============================
 // Get All Products
 // ===============================
+
 router.get(
   "/",
   getProducts
 );
 
 // ===============================
+// Get Single Product
+// ===============================
+
+router.get(
+  "/:id",
+  getProductById
+);
+
+// ===============================
 // Add Product
 // ===============================
+
 router.post(
   "/",
   authMiddleware,
@@ -36,6 +50,7 @@ router.post(
 // ===============================
 // Update Product
 // ===============================
+
 router.put(
   "/:id",
   authMiddleware,
@@ -46,6 +61,7 @@ router.put(
 // ===============================
 // Restock Product
 // ===============================
+
 router.put(
   "/:id/restock",
   authMiddleware,
@@ -56,6 +72,7 @@ router.put(
 // ===============================
 // Delete Product
 // ===============================
+
 router.delete(
   "/:id",
   authMiddleware,

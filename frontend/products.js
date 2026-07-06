@@ -99,6 +99,8 @@ ${product.stock <= 0 ? "disabled" : ""}
 🛒 Add To Cart
 </button>
 
+
+
 ${
 role === "admin"
 ?
@@ -127,6 +129,7 @@ onclick="deleteProduct('${product._id}')"
 ""
 }
 
+
 </div>
 
 `;
@@ -137,55 +140,99 @@ onclick="deleteProduct('${product._id}')"
 
 }
 
-// ===============================
-// Search
-// ===============================
+function applyFilters(){
 
-document
-.getElementById("searchInput")
-.addEventListener("input", function () {
+    let filtered = [...allProducts];
 
-    const keyword =
-        this.value.toLowerCase();
+    // Search
+    const search =
+    document.getElementById("searchInput").value.toLowerCase();
 
-    const filtered =
-        allProducts.filter(product =>
-            product.name.toLowerCase().includes(keyword)
+    if(search){
+
+        filtered = filtered.filter(product=>
+
+            product.name.toLowerCase().includes(search)
+
         );
-
-    displayProducts(filtered);
-
-});
-
-// ===============================
-// Category Filter
-// ===============================
-
-document
-.getElementById("categoryFilter")
-.addEventListener("change", function () {
-
-    const category = this.value;
-
-    if (category === "all") {
-
-        displayProducts(allProducts);
-
-        return;
 
     }
 
-    const filtered =
-        allProducts.filter(product =>
+    // Category
+
+    const category =
+    document.getElementById("categoryFilter").value;
+
+    if(category !== "All"){
+
+        filtered = filtered.filter(product=>
+
             product.category === category
+
         );
+
+    }
+
+    // Price
+
+    const price =
+    document.getElementById("priceFilter").value;
+
+    if(price){
+
+        const range = price.split("-");
+
+        const min = Number(range[0]);
+
+        const max = Number(range[1]);
+
+        filtered = filtered.filter(product=>
+
+            product.price >= min &&
+            product.price <= max
+
+        );
+
+    }
+
+    // Sort
+
+    const sort =
+    document.getElementById("sortFilter").value;
+
+    if(sort==="priceLow"){
+
+        filtered.sort((a,b)=>a.price-b.price);
+
+    }
+
+    else if(sort==="priceHigh"){
+
+        filtered.sort((a,b)=>b.price-a.price);
+
+    }
+
+    else if(sort==="name"){
+
+        filtered.sort((a,b)=>a.name.localeCompare(b.name));
+
+    }
 
     displayProducts(filtered);
 
+}
 
-});
+document.getElementById("searchInput")
+.addEventListener("input",applyFilters);
 
+document.getElementById("categoryFilter")
+.addEventListener("change",applyFilters);
 
+document.getElementById("priceFilter")
+.addEventListener("change",applyFilters);
+
+document.getElementById("sortFilter")
+.addEventListener("change",applyFilters);
 
 
 // ===============================

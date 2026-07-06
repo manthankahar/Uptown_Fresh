@@ -203,6 +203,10 @@ res.render("forgotPassword");
 
 });
 
+app.get("/wishlist",(req,res)=>{
+res.render("wishlist");
+});
+
 // Upload Folder
 app.use(
 "/uploads",
@@ -251,6 +255,11 @@ app.get("/orders",(req,res)=>{
 res.render("orders");
 });
 
+
+app.use(
+"/api/wishlist",
+require("./routes/wishlistRoutes")
+);
 
 const PORT =
 process.env.PORT || 5000;
