@@ -191,7 +191,7 @@ doc.fontSize(18).text("Invoice");
 
 doc.moveDown();
 
-doc.fontSize(12).text("Customer : " + order.userId.username);
+doc.fontSize(12).text("Customer : " + order.userId.name);
 
 doc.text("Email : " + order.userId.email);
 

@@ -18,6 +18,18 @@ Authorization:`Bearer ${localStorage.getItem("token")}`
 
 const orders = await response.json();
 
+if (!orders.length) {
+
+container.innerHTML = `
+<div style="width:100%;text-align:center;padding:50px;">
+<h2>📦 No Orders Found</h2>
+</div>
+`;
+
+return;
+
+}
+
 console.log("Orders =>", orders);
 
 const container =
@@ -158,29 +170,27 @@ showToast(
 // Update Status
 // ======================
 
-async function changeStatus(id,status){
+async function changeStatus(id, status) {
 
+try {
 
-    console.log("changeStatus called");
-    console.log(id);
-    console.log(status);
 const response = await fetch(
 
 `http://localhost:5000/api/orders/status/${id}`,
 
 {
 
-method:"PUT",
+method: "PUT",
 
-headers:{
+headers: {
 
-"Content-Type":"application/json",
+"Content-Type": "application/json",
 
-Authorization:`Bearer ${localStorage.getItem("token")}`
+Authorization: `Bearer ${localStorage.getItem("token")}`
 
 },
 
-body:JSON.stringify({
+body: JSON.stringify({
 
 status
 
@@ -192,9 +202,17 @@ status
 
 const data = await response.json();
 
-showToast(data.message,"success");
+showToast(data.message, "success");
 
 loadOrders();
+
+} catch (error) {
+
+console.log(error);
+
+showToast("Unable To Update Status", "error");
+
+}
 
 }
 
@@ -202,7 +220,7 @@ loadOrders();
 // Delete Order
 // ======================
 
-async function deleteOrder(id){
+async function deleteOrder(id) {
 
 const confirmDelete = confirm(
 
@@ -210,11 +228,13 @@ const confirmDelete = confirm(
 
 );
 
-if(!confirmDelete){
+if (!confirmDelete) {
 
 return;
 
 }
+
+try {
 
 const response = await fetch(
 
@@ -222,11 +242,11 @@ const response = await fetch(
 
 {
 
-method:"DELETE",
+method: "DELETE",
 
-headers:{
+headers: {
 
-Authorization:`Bearer ${localStorage.getItem("token")}`
+Authorization: `Bearer ${localStorage.getItem("token")}`
 
 }
 
@@ -236,10 +256,16 @@ Authorization:`Bearer ${localStorage.getItem("token")}`
 
 const data = await response.json();
 
-showToast(data.message,"success");
+showToast(data.message, "success");
 
 loadOrders();
+
+} catch (error) {
+
+console.log(error);
+
+showToast("Unable To Delete Order", "error");
 
 }
 
-loadOrders();
+}
