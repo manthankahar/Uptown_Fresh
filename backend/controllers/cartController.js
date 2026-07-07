@@ -8,7 +8,13 @@ const addToCart = async (req, res) => {
 
 try {
 
-const { productId } = req.body;
+const {
+  productId,
+  quantity
+} = req.body;
+
+const qty =
+Number(quantity) || 1;
 
 let cart = await Cart.findOne({
 userId: req.user.id
@@ -31,13 +37,13 @@ item => item.productId.toString() === productId
 
 if (existingProduct) {
 
-existingProduct.quantity += 1;
+existingProduct.quantity += qty;
 
 } else {
 
 cart.products.push({
 productId,
-quantity: 1
+quantity: qty
 });
 
 }

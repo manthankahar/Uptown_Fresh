@@ -142,6 +142,158 @@ Loading Products...
 
 </div>
 
+<!-- ===============================
+Product Details Modal
+=============================== -->
+
+<div id="productModal" class="product-modal">
+
+    <div class="product-modal-content">
+
+        <span
+            class="close-modal"
+            onclick="closeProductModal()">
+            &times;
+        </span>
+
+        <div class="product-modal-grid">
+
+            <!-- Left -->
+
+            <div class="product-left">
+
+                <img
+                    id="modalImage"
+                    src=""
+                    alt=""
+                    class="modal-product-image">
+
+            </div>
+
+            <!-- Right -->
+
+            <div class="product-right">
+
+                <h1 id="modalName"></h1>
+
+                <div
+                    id="modalRating"
+                    class="modal-rating">
+                </div>
+
+                <h2 id="modalPrice"></h2>
+
+                <p id="modalCategory"></p>
+
+                <p id="modalStock"></p>
+
+                <p id="modalDescription"></p>
+                
+
+                <div class="quantity-box">
+
+                    <hr style="margin:20px 0;">
+
+                    <button
+                        onclick="decreaseQty()">
+                        -
+                    </button>
+
+                    <span id="modalQty">
+                        1
+                    </span>
+
+                    <button
+                        onclick="increaseQty()">
+                        +
+                    </button>
+
+                </div>
+
+                <div class="modal-buttons">
+
+<button
+class="btn"
+onclick="addToCart(selectedProduct)">
+🛒 Add To Cart
+</button>
+
+                    <button
+                        class="btn"
+                        style="background:#e74c3c"
+                        id="wishlistBtn">
+                        ❤️ Wishlist
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr style="margin:35px 0;">
+
+        <h2>
+            ⭐ Customer Reviews
+        </h2>
+
+        <div id="reviewsContainer">
+
+            No Reviews Yet
+
+        </div>
+
+        <hr style="margin:35px 0;">
+
+        <h2>
+            Write Review
+        </h2>
+
+        <div class="review-form">
+
+            <select id="reviewRating">
+
+                <option value="5">
+                    ⭐⭐⭐⭐⭐
+                </option>
+
+                <option value="4">
+                    ⭐⭐⭐⭐
+                </option>
+
+                <option value="3">
+                    ⭐⭐⭐
+                </option>
+
+                <option value="2">
+                    ⭐⭐
+                </option>
+
+                <option value="1">
+                    ⭐
+                </option>
+
+            </select>
+
+            <textarea
+                id="reviewComment"
+                placeholder="Write Your Review...">
+            </textarea>
+
+            <button
+                class="btn"
+                id="submitReviewBtn">
+
+                Submit Review
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
 <!-- Stock Modal -->
 
 <div id="stockModal" class="stock-modal">

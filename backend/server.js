@@ -174,6 +174,14 @@ app.get("/products", (req, res) => {
 res.render("products");
 });
 
+// ===============================
+// Product Details Page
+// ===============================
+
+app.get("/product/:id", (req, res) => {
+  res.render("productDetails");
+});
+
 app.get("/cart", (req, res) => {
 res.render("cart");
 });

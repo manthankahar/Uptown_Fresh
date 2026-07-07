@@ -1,5 +1,203 @@
 let allProducts = [];
 
+// =====================================
+// Product Modal
+// =====================================
+
+let selectedProduct = null;
+let selectedQty = 1;
+
+function openProductModal(product){
+
+selectedProduct = product;
+
+selectedQty = 1;
+
+document.getElementById("modalImage").src =
+product.image;
+
+document.getElementById("modalName").innerHTML =
+product.name;
+
+document.getElementById("modalPrice").innerHTML =
+"₹" + product.price;
+
+document.getElementById("modalCategory").innerHTML =
+"<b>Category :</b> " + product.category;
+
+document.getElementById("modalDescription").innerHTML =
+product.description;
+
+document.getElementById("modalQty").innerHTML =
+selectedQty;
+
+if(product.stock>0){
+
+document.getElementById("modalStock").innerHTML =
+"✅ " + product.stock + " In Stock";
+
+}else{
+
+document.getElementById("modalStock").innerHTML =
+"❌ Out Of Stock";
+
+}
+
+let stars="";
+
+const rating =
+Math.round(product.rating || 0);
+
+for(let i=1;i<=5;i++){
+
+stars +=
+
+i<=rating
+?
+"⭐"
+:
+"☆";
+
+}
+
+document.getElementById("modalRating").innerHTML =
+stars;
+
+document.getElementById("productModal").style.display =
+"flex";
+
+}
+
+function closeProductModal(){
+
+document.getElementById("productModal").style.display =
+"none";
+
+}
+
+function increaseQty(){
+
+if(!selectedProduct) return;
+
+if(selectedQty < selectedProduct.stock){
+
+selectedQty++;
+
+document.getElementById("modalQty").innerHTML =
+selectedQty;
+
+}
+
+}
+
+function decreaseQty(){
+
+if(selectedQty>1){
+
+selectedQty--;
+
+document.getElementById("modalQty").innerHTML =
+selectedQty;
+
+}
+
+}
+
+// Close Popup
+
+window.onclick = function(event){
+
+const modal =
+document.getElementById("productModal");
+
+if(event.target===modal){
+
+closeProductModal();
+
+}
+
+}
+
+// =====================================
+// Wishlist
+// =====================================
+
+async function addToWishlist(){
+
+const token =
+localStorage.getItem("token");
+
+if(!token){
+
+showToast(
+"Please Login First",
+"warning"
+);
+
+setTimeout(()=>{
+
+window.location.href="/login";
+
+},1000);
+
+return;
+
+}
+
+try{
+
+const response = await fetch(
+
+"http://localhost:5000/api/wishlist",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json",
+
+Authorization:`Bearer ${token}`
+
+},
+
+body:JSON.stringify({
+
+productId:selectedProduct._id
+
+})
+
+}
+
+);
+
+const data = await response.json();
+
+showToast(
+
+data.message,
+
+"success"
+
+);
+
+}catch(error){
+
+console.log(error);
+
+showToast(
+
+"Something Went Wrong",
+
+"error"
+
+);
+
+}
+
+}
+
 // ===============================
 // Load Products
 // ===============================
@@ -90,6 +288,14 @@ product.stock > 0
 }
 
 <br><br>
+
+<button
+class="btn"
+style="background:#3498db;margin-bottom:10px;"
+onclick='openProductModal(${JSON.stringify(product)})'
+>
+👁 View Details
+</button>
 
 <button
 class="btn"
@@ -272,8 +478,9 @@ window.location.href="/login";
                     Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    productId: product._id
-                })
+    productId: product._id,
+    quantity: selectedQty || 1
+})
             }
         );
 

@@ -236,6 +236,226 @@ const deleteProduct = async (req, res) => {
 
 };
 
+// ===============================
+// Add Review
+// ===============================
+const addReview = async (req, res) => {
+
+  try {
+
+    const { rating, comment } = req.body;
+
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+
+      return res.status(404).json({
+        message: "Product Not Found"
+      });
+
+    }
+
+    const alreadyReviewed = product.reviews.find(
+
+      review => review.user.toString() === req.user.id
+
+    );
+
+    if (alreadyReviewed) {
+
+      return res.status(400).json({
+        message: "You Have Already Reviewed This Product"
+      });
+
+    }
+
+    const review = {
+
+      user: req.user.id,
+      name: req.user.name,
+      rating: Number(rating),
+      comment
+
+    };
+
+    product.reviews.push(review);
+
+    product.numReviews = product.reviews.length;
+
+    product.rating =
+
+      product.reviews.reduce(
+
+        (acc, item) => acc + item.rating,
+
+        0
+
+      ) / product.reviews.length;
+
+    await product.save();
+
+    res.status(201).json({
+
+      message: "Review Added Successfully",
+
+      product
+
+    });
+
+  }
+
+  catch (error) {
+
+    res.status(500).json({
+
+      message: error.message
+
+    });
+
+  }
+
+};
+
+// ===============================
+// Update Review
+// ===============================
+const updateReview = async (req, res) => {
+
+  try {
+
+    const { rating, comment } = req.body;
+
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+
+      return res.status(404).json({
+        message: "Product Not Found"
+      });
+
+    }
+
+    const review = product.reviews.find(
+
+      review => review.user.toString() === req.user.id
+
+    );
+
+    if (!review) {
+
+      return res.status(404).json({
+        message: "Review Not Found"
+      });
+
+    }
+
+    review.rating = Number(rating);
+
+    review.comment = comment;
+
+    product.rating =
+
+      product.reviews.reduce(
+
+        (acc, item) => acc + item.rating,
+
+        0
+
+      ) / product.reviews.length;
+
+    await product.save();
+
+    res.json({
+
+      message: "Review Updated Successfully",
+
+      product
+
+    });
+
+  }
+
+  catch (error) {
+
+    res.status(500).json({
+
+      message: error.message
+
+    });
+
+  }
+
+};
+
+// ===============================
+// Delete Review
+// ===============================
+const deleteReview = async (req, res) => {
+
+  try {
+
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+
+      return res.status(404).json({
+
+        message: "Product Not Found"
+
+      });
+
+    }
+
+    product.reviews = product.reviews.filter(
+
+      review => review._id.toString() !== req.params.reviewId
+
+    );
+
+    product.numReviews = product.reviews.length;
+
+    if (product.reviews.length === 0) {
+
+      product.rating = 0;
+
+    } else {
+
+      product.rating =
+
+        product.reviews.reduce(
+
+          (acc, item) => acc + item.rating,
+
+          0
+
+        ) / product.reviews.length;
+
+    }
+
+    await product.save();
+
+    res.json({
+
+      message: "Review Deleted Successfully",
+
+      product
+
+    });
+
+  }
+
+  catch (error) {
+
+    res.status(500).json({
+
+      message: error.message
+
+    });
+
+  }
+
+};
+
 module.exports = {
 
   getProducts,
@@ -248,6 +468,12 @@ module.exports = {
 
   restockProduct,
 
-  deleteProduct
+  deleteProduct,
+
+  addReview,
+
+  updateReview,
+
+  deleteReview
 
 };

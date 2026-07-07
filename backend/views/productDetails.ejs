@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Product Details | UptownFresh</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+
+<%- include("partials/navbar") %>
+
+<div class="product-details-container">
+
+    <div class="product-image-box">
+
+        <img
+            id="productImage"
+            src=""
+            alt="Product Image"
+            class="product-details-image"
+        >
+
+    </div>
+
+    <div class="product-info-box">
+
+        <h1 id="productName"></h1>
+
+        <p id="productDescription"></p>
+
+        <h2 id="productPrice"></h2>
+
+        <p>
+            <b>Category :</b>
+            <span id="productCategory"></span>
+        </p>
+
+        <p>
+            <b>Stock :</b>
+            <span id="productStock"></span>
+        </p>
+
+        <br>
+
+        <button
+            class="btn"
+            id="cartBtn"
+        >
+            🛒 Add To Cart
+        </button>
+
+        <button
+            class="btn"
+            onclick="window.location='/products'"
+            style="background:#555;"
+        >
+            ← Back
+        </button>
+
+    </div>
+
+</div>
+
+<hr style="margin:50px 0;">
+
+<div
+style="
+max-width:1100px;
+margin:auto;
+padding:20px;
+"
+>
+
+<h2>
+⭐ Ratings & Reviews
+</h2>
+
+<p style="color:gray;">
+
+Reviews feature next step ma add karishu.
+
+</p>
+
+</div>
+
+<%- include("partials/footer") %>
+
+<script>
+
+const id =
+window.location.pathname.split("/").pop();
+
+async function loadProduct(){
+
+try{
+
+const response =
+await fetch(
+`http://localhost:5000/api/products/${id}`
+);
+
+const product =
+await response.json();
+
+document.getElementById("productImage").src =
+product.image;
+
+document.getElementById("productName").innerText =
+product.name;
+
+document.getElementById("productDescription").innerText =
+product.description;
+
+document.getElementById("productPrice").innerText =
+"₹"+product.price;
+
+document.getElementById("productCategory").innerText =
+product.category;
+
+document.getElementById("productStock").innerText =
+product.stock;
+
+document.getElementById("cartBtn").onclick =
+function(){
+
+addToCart(product);
+
+};
+
+}catch(error){
+
+console.log(error);
+
+}
+
+}
+
+async function addToCart(product){
+
+const token =
+localStorage.getItem("token");
+
+if(!token){
+
+alert("Please Login First");
+
+window.location="/login";
+
+return;
+
+}
+
+const response =
+await fetch(
+"http://localhost:5000/api/cart/add",
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json",
+
+Authorization:`Bearer ${token}`
+
+},
+
+body:JSON.stringify({
+
+productId:product._id
+
+})
+
+}
+
+);
+
+const data =
+await response.json();
+
+alert(data.message);
+
+}
+
+loadProduct();
+
+</script>
+
+</body>
+</html>
