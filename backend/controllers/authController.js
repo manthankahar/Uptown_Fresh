@@ -63,92 +63,97 @@ message:error.message
 
 };
 
+// ===============================
 // Login
+// ===============================
+
 const login = async (req, res) => {
 
-  throw new Error("LOGIN FUNCTION HIT");
+  try {
 
-try{
+    console.log("Request Body:", req.body);
 
-console.log("Request Body:", req.body);
+    const { email, password } = req.body;
 
-const { email, password } = req.body;
+    const user = await User.findOne({
 
-console.log("Login Input:", email);
-console.log("Entered Password:", password);
+      $or: [
+        { email: email },
+        { mobile: email }
+      ]
 
-const user = await User.findOne({
+    });
 
-$or:[
-{ email: email },
-{ mobile: email }
-]
+    if (!user) {
 
-});
+      return res.status(400).json({
 
-console.log("User Found:", user);
+        message: "User Not Found"
 
-if(!user){
+      });
 
-return res.status(400).json({
+    }
 
-message:"User Not Found"
+    const match = await bcrypt.compare(
 
-});
+      password,
+      user.password
 
-}
+    );
 
-const match =
-await bcrypt.compare(
+    if (!match) {
 
-password,
-user.password
+      return res.status(400).json({
 
-);
+        message: "Wrong Password"
 
-console.log("Password Match:", match);
+      });
 
-if(!match){
+    }
 
-return res.status(400).json({
+    // ===============================
+    // JWT Token
+    // ===============================
 
-message:"Wrong Password"
+    const token = jwt.sign(
 
-});
+      {
+        id: user._id,
+        name: user.name,      // <-- username nai, name
+        email: user.email,
+        role: user.role
+      },
 
-}
+      process.env.JWT_SECRET,
 
-const token =
-jwt.sign(
+      {
+        expiresIn: "7d"
+      }
 
-{ id:user._id },
+    );
 
-process.env.JWT_SECRET,
+    res.json({
 
-{ expiresIn:"7d" }
+      message: "Login Successful",
 
-);
+      token,
 
-res.json({
+      user
 
-message:"Login Successful",
+    });
 
-token,
+  }
 
-user
+  catch (error) {
 
-});
+    console.log(error);
 
-}catch(error){
+    res.status(500).json({
 
-console.log(error);
+      message: error.message
 
-res.status(500).json({
+    });
 
-message:error.message
-
-});
-
-}
+  }
 
 };

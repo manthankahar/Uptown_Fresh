@@ -100,6 +100,9 @@ const getProductById = async (req, res) => {
 
     const product = await Product.findById(req.params.id);
 
+    console.log("Product ID =", req.params.id);
+    console.log("Product =", product);
+
     if (!product) {
 
       return res.status(404).json({
@@ -241,6 +244,9 @@ const deleteProduct = async (req, res) => {
 // ===============================
 const addReview = async (req, res) => {
 
+  console.log("REQ.USER =", req.user);
+console.log("REQ.BODY =", req.body);
+
   try {
 
     const { rating, comment } = req.body;
@@ -255,20 +261,22 @@ const addReview = async (req, res) => {
 
     }
 
-    const alreadyReviewed = product.reviews.find(
+ console.log("Reviews =", product.reviews);
 
-      review => review.user.toString() === req.user.id
+const alreadyReviewed = product.reviews.find(
+    review => review.user && review.user.toString() === req.user.id
+);
 
-    );
+console.log("Already Reviewed =", alreadyReviewed);
 
-    if (alreadyReviewed) {
+if (alreadyReviewed) {
 
-      return res.status(400).json({
+    return res.status(400).json({
         message: "You Have Already Reviewed This Product"
-      });
+    });
 
-    }
-
+}
+    console.log(req.user);
     const review = {
 
       user: req.user.id,
@@ -326,6 +334,8 @@ const updateReview = async (req, res) => {
     const { rating, comment } = req.body;
 
     const product = await Product.findById(req.params.id);
+
+    console.log("Product =", product);
 
     if (!product) {
 

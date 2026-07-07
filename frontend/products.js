@@ -1,5 +1,66 @@
 let allProducts = [];
 
+
+// =====================================
+// Global Variables
+// =====================================
+
+
+
+// =====================================
+// Open Product Modal
+// =====================================
+
+async function openProductModal(product) {
+
+    selectedProduct = product;
+    selectedQty = 1;
+
+    document.getElementById("modalImage").src = product.image;
+    document.getElementById("modalName").innerHTML = product.name;
+    document.getElementById("modalPrice").innerHTML = "₹" + product.price;
+    document.getElementById("modalCategory").innerHTML =
+        "<b>Category :</b> " + product.category;
+    document.getElementById("modalDescription").innerHTML =
+        product.description;
+
+    document.getElementById("modalQty").innerHTML = selectedQty;
+
+    if (product.stock > 0) {
+
+        document.getElementById("modalStock").innerHTML =
+            "✅ " + product.stock + " In Stock";
+
+    } else {
+
+        document.getElementById("modalStock").innerHTML =
+            "❌ Out Of Stock";
+
+    }
+
+    // Rating
+
+    let stars = "";
+
+    const rating = Math.round(product.rating || 0);
+
+    for (let i = 1; i <= 5; i++) {
+
+        stars += i <= rating ? "⭐" : "☆";
+
+    }
+
+    document.getElementById("modalRating").innerHTML =
+        stars + ` (${product.numReviews || 0} Reviews)`;
+
+    document.getElementById("productModal").style.display = "flex";
+
+    // Load Reviews
+
+    await loadReviews(product._id);
+
+}
+
 // =====================================
 // Product Modal
 // =====================================
@@ -115,6 +176,187 @@ if(event.target===modal){
 closeProductModal();
 
 }
+
+}
+
+// =====================================
+// Review Button
+// =====================================
+
+document
+.getElementById("submitReviewBtn")
+.addEventListener(
+"click",
+submitReview
+);
+
+// =====================================
+// Load Reviews
+// =====================================
+
+async function loadReviews(productId){
+
+try{
+
+const response = await fetch(
+
+`http://localhost:5000/api/products/${productId}`
+
+);
+
+const product = await response.json();
+
+const container =
+document.getElementById("reviewsContainer");
+
+if(!product.reviews || product.reviews.length===0){
+
+container.innerHTML = `
+<p>No Reviews Yet</p>
+`;
+
+return;
+
+}
+
+let html = "";
+
+product.reviews.forEach(review=>{
+
+let stars="";
+
+for(let i=1;i<=5;i++){
+
+stars += i<=review.rating ? "⭐":"☆";
+
+}
+
+html += `
+
+<div style="
+padding:15px;
+border-bottom:1px solid #ddd;
+margin-bottom:10px;
+">
+
+<h4>
+👤 ${review.name}
+</h4>
+
+<p>${stars}</p>
+
+<p style="
+margin-top:8px;
+line-height:1.6;
+">
+${review.comment}
+</p>
+
+</div>
+
+`;
+
+});
+
+container.innerHTML = html;
+
+}catch(error){
+
+console.log(error);
+
+}
+}
+
+// =====================================
+// Submit Review
+// =====================================
+
+document
+.getElementById("submitReviewBtn")
+.addEventListener("click", submitReview);
+
+async function submitReview(){
+
+    const token = localStorage.getItem("token");
+
+    if(!token){
+
+        showToast("Please Login First","warning");
+
+        setTimeout(()=>{
+            window.location.href="/login";
+        },1000);
+
+        return;
+    }
+
+    if(!selectedProduct){
+
+        showToast("Please Select Product","warning");
+        return;
+
+    }
+
+    const rating =
+    document.getElementById("reviewRating").value;
+
+    const comment =
+    document.getElementById("reviewComment").value.trim();
+
+    if(comment===""){
+
+        showToast("Please Write Review","warning");
+        return;
+
+    }
+
+    try{
+
+        const response = await fetch(
+
+            `http://localhost:5000/api/products/${selectedProduct._id}/review`,
+
+            {
+
+                method:"POST",
+
+                headers:{
+
+                    "Content-Type":"application/json",
+
+                    Authorization:`Bearer ${token}`
+
+                },
+
+                body:JSON.stringify({
+
+                    rating,
+                    comment
+
+                })
+
+            }
+
+        );
+
+        const data = await response.json();
+
+        showToast(data.message,"success");
+
+        document.getElementById("reviewComment").value="";
+
+        loadProducts();
+
+        closeProductModal();
+
+    }
+    catch(error){
+
+        console.log(error);
+
+        showToast("Something Went Wrong","error");
+
+    }
 
 }
 
