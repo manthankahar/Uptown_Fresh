@@ -188,6 +188,22 @@ onclick="downloadInvoice('${order._id}')"
 
 </button>
 
+${order.status=="Pending" || order.status=="Confirmed" ? `
+
+<br><br>
+
+<button
+class="btn"
+style="background:#e74c3c;"
+onclick="cancelOrder('${order._id}')"
+>
+
+❌ Cancel Order
+
+</button>
+
+` : ""}
+
 </div>
 
 `;
@@ -259,7 +275,139 @@ window.URL.revokeObjectURL(url);
 
 }
 
+
+// ===============================
+// Open Cancel Modal
+// ===============================
+
+function cancelOrder(id){
+
+selectedOrderId = id;
+
+document
+.getElementById("cancelModal")
+.style.display = "flex";
+
+}
+
+// ===============================
+// Close Modal
+// ===============================
+
+function closeModal(){
+
+document
+.getElementById("cancelModal")
+.style.display = "none";
+
+selectedOrderId = null;
+
+}
+
+// ===============================
+// Confirm Cancel
+// ===============================
+
+let selectedOrderId = null;
+
+// Open Modal
+function cancelOrder(id){
+
+selectedOrderId = id;
+
+document.getElementById("cancelModal").style.display = "flex";
+
+}
+
+// Close Modal
+function closeModal(){
+
+document.getElementById("cancelModal").style.display = "none";
+
+selectedOrderId = null;
+
+}
+
+// Confirm Cancel
+async function confirmCancel(){
+
+const response = await fetch(
+
+`http://localhost:5000/api/orders/cancel/${selectedOrderId}`,
+
+{
+
+method:"PUT",
+
+headers:{
+Authorization:`Bearer ${localStorage.getItem("token")}`
+}
+
+}
+
+);
+
+const data = await response.json();
+
+showToast(data.message,"success");
+
+closeModal();
+
+loadOrders();
+
+}
+
+// Hide Modal on Page Load
+window.onload = function(){
+
+document.getElementById("cancelModal").style.display = "none";
+
+loadOrders();
+
+};
+
 </script>
+
+<!-- ============================= -->
+<!-- Cancel Order Modal -->
+<!-- ============================= -->
+
+<div id="cancelModal" class="modal">
+
+<div class="modal-box">
+
+<h2>⚠ Cancel Order</h2>
+
+<p>
+Are you sure you want to cancel this order?
+</p>
+
+<div class="modal-buttons">
+
+<button
+class="btn"
+onclick="closeModal()"
+>
+
+No
+
+</button>
+
+<button
+class="btn btn-danger"
+onclick="confirmCancel()"
+>
+
+
+Yes, Cancel
+
+</button>
+
+</div>
+
+</div>
+
+</div>
 
 </body>
 

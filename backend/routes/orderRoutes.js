@@ -11,16 +11,12 @@ require("../middleware/adminMiddleware");
 const {
 
 placeOrder,
-
 getOrders,
-
 downloadInvoice,
-
 getAllOrders,
-
 updateOrderStatus,
-
-deleteOrder
+deleteOrder,
+cancelOrder
 
 } = require("../controllers/orderController");
 
@@ -101,6 +97,14 @@ updateOrderStatus
 // ======================
 // Admin - Delete Order
 // ======================
+
+// User - Delete
+
+router.put(
+"/cancel/:id",
+authMiddleware,
+cancelOrder
+);
 
 router.delete(
 

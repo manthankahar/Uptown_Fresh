@@ -1128,3 +1128,66 @@ width:100%;
 }
 
 }
+
+/* ========================= */
+/* Cancel Order Modal */
+/* ========================= */
+
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.6);
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+
+.modal-box{
+background:#fff;
+width:400px;
+max-width:90%;
+padding:30px;
+border-radius:15px;
+text-align:center;
+box-shadow:0 15px 40px rgba(0,0,0,.3);
+animation:popup .25s ease;
+}
+
+.modal-box h2{
+margin-bottom:15px;
+}
+
+.modal-box p{
+margin-bottom:25px;
+color:#555;
+}
+
+.modal-buttons{
+display:flex;
+justify-content:center;
+gap:15px;
+}
+
+.btn-danger{
+background:#e74c3c;
+color:#fff;
+}
+
+.btn-danger:hover{
+background:#c0392b;
+}
+
+@keyframes popup{
+from{
+transform:scale(.8);
+opacity:0;
+}
+to{
+transform:scale(1);
+opacity:1;
+}
+}

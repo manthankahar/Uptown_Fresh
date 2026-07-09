@@ -368,6 +368,58 @@ message:error.message
 };
 
 
+// =====================
+// User Cancel Order
+// =====================
+
+const cancelOrder = async (req, res) => {
+
+try {
+
+const order = await Order.findById(req.params.id);
+
+if (!order) {
+return res.status(404).json({
+message: "Order Not Found"
+});
+}
+
+// User potanu j order cancel kari shake
+if (order.userId.toString() !== req.user.id) {
+return res.status(403).json({
+message: "Access Denied"
+});
+}
+
+// Cancel only before shipping
+if (
+order.status === "Packed" ||
+order.status === "Shipped" ||
+order.status === "Delivered"
+) {
+return res.status(400).json({
+message: "Order Cannot Be Cancelled"
+});
+}
+
+order.status = "Cancelled";
+
+await order.save();
+
+res.json({
+message: "Order Cancelled Successfully"
+});
+
+} catch (error) {
+
+res.status(500).json({
+message: error.message
+});
+
+}
+
+};
+
 
 module.exports = {
 
@@ -381,6 +433,9 @@ getAllOrders,
 
 updateOrderStatus,
 
-deleteOrder
+deleteOrder,
+
+cancelOrder
 
 };
+
