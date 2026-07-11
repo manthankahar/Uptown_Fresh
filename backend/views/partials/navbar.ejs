@@ -145,34 +145,26 @@ localStorage.removeItem("userEmail");
 localStorage.removeItem("userRole");
 localStorage.removeItem("cart");
 
+// Check if showToast exists
+if(typeof showToast === "function"){
+
 showToast(
 "Logout Successful",
 "success"
 );
 
 setTimeout(()=>{
+window.location.replace("/login");
+},1000);
+
+}else{
 
 window.location.replace("/login");
 
-},1000);
-
 }
 
-function updateCartCount(){
-
-const cart =
-JSON.parse(
-localStorage.getItem("cart")
-) || [];
-
-document.getElementById(
-"cartCount"
-).innerText =
-cart.length;
-
 }
-
-updateCartCount();
+// updateCartCount();
 
 </script>
 
