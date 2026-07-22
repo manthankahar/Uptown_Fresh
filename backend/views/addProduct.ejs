@@ -61,12 +61,21 @@ required
 min="1"
 >
 
-<input
+<!-- <input
 type="text"
 id="image"
 placeholder="Image URL"
 required
 
+> -->
+
+<label><b>Product Image</b></label>
+
+<input
+type="file"
+id="image"
+accept="image/*"
+required
 >
 
 <textarea
@@ -85,14 +94,108 @@ Add Product
 
 <script>
 
+// const authToken = localStorage.getItem("token");
+
+// if(!authToken){
+
+// showToast(
+// "Please Login First",
+// "warning"
+// );
+
+// setTimeout(()=>{
+
+// window.location.href="/login";
+
+// },1000);
+
+// }
+
+// document
+// .getElementById("productForm")
+// .addEventListener(
+// "submit",
+// async (e) => {
+
+// e.preventDefault();
+
+// try{
+
+// const response =
+// await fetch(
+// "http://localhost:5000/api/products",
+// {
+// method:"POST",
+
+// headers:{
+// "Content-Type":"application/json",
+// Authorization:`Bearer ${authToken}`
+// },
+
+// body:JSON.stringify({
+
+// name:document.getElementById("name").value,
+
+// price:document.getElementById("price").value,
+
+// category:document.getElementById("category").value,
+
+// stock:document.getElementById("stock").value,
+
+// image:document.getElementById("image").value,
+
+// description:document.getElementById("description").value
+
+// })
+
+// }
+
+// );
+
+// const data =
+// await response.json();
+
+// if(response.ok){
+
+// showToast(
+// "Product Added Successfully",
+// "success"
+// );
+
+// setTimeout(()=>{
+
+// window.location.href="/products";
+
+// },1000);
+
+// }else{
+
+// showToast(
+// data.message,
+// "error"
+// );
+
+// }
+
+// }catch(error){
+
+// console.log(error);
+
+// showToast(
+// "Something Went Wrong",
+// "error"
+// );
+
+// }
+
+// });
+
+
 const authToken = localStorage.getItem("token");
 
 if(!authToken){
 
-showToast(
-"Please Login First",
-"warning"
-);
+showToast("Please Login First","warning");
 
 setTimeout(()=>{
 
@@ -102,56 +205,51 @@ window.location.href="/login";
 
 }
 
-document
-.getElementById("productForm")
-.addEventListener(
-"submit",
-async (e) => {
+document.getElementById("productForm").addEventListener("submit",async(e)=>{
 
 e.preventDefault();
 
 try{
 
-const response =
-await fetch(
+const formData = new FormData();
+
+formData.append("name",document.getElementById("name").value);
+
+formData.append("price",document.getElementById("price").value);
+
+formData.append("category",document.getElementById("category").value);
+
+formData.append("stock",document.getElementById("stock").value);
+
+formData.append("description",document.getElementById("description").value);
+
+formData.append("image",document.getElementById("image").files[0]);
+
+const response = await fetch(
+
 "http://localhost:5000/api/products",
+
 {
+
 method:"POST",
 
 headers:{
-"Content-Type":"application/json",
+
 Authorization:`Bearer ${authToken}`
+
 },
 
-body:JSON.stringify({
-
-name:document.getElementById("name").value,
-
-price:document.getElementById("price").value,
-
-category:document.getElementById("category").value,
-
-stock:document.getElementById("stock").value,
-
-image:document.getElementById("image").value,
-
-description:document.getElementById("description").value
-
-})
+body:formData
 
 }
 
 );
 
-const data =
-await response.json();
+const data = await response.json();
 
 if(response.ok){
 
-showToast(
-"Product Added Successfully",
-"success"
-);
+showToast("Product Added Successfully","success");
 
 setTimeout(()=>{
 
@@ -161,10 +259,7 @@ window.location.href="/products";
 
 }else{
 
-showToast(
-data.message,
-"error"
-);
+showToast(data.message,"error");
 
 }
 
@@ -172,10 +267,7 @@ data.message,
 
 console.log(error);
 
-showToast(
-"Something Went Wrong",
-"error"
-);
+showToast("Something Went Wrong","error");
 
 }
 

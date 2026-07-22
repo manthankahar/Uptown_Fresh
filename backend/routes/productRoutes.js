@@ -91,6 +91,7 @@ require("../middleware/authMiddleware");
 
 const adminMiddleware =
 require("../middleware/adminMiddleware");
+const upload = require("../middleware/upload");
 
 const {
 
@@ -110,6 +111,7 @@ const {
   deleteReview
 
 } = require("../controllers/productController");
+
 
 // ===============================
 // Get All Products
@@ -134,10 +136,19 @@ router.get(
 // ===============================
 
 router.post(
-  "/",
-  authMiddleware,
-  adminMiddleware,
-  addProduct
+    "/",
+    authMiddleware,
+    adminMiddleware,
+    upload.single("image"),
+    addProduct
+);
+
+router.post(
+  "/test",
+  (req, res) => {
+    console.log("TEST ROUTE HIT");
+    res.json({ success: true });
+  }
 );
 
 // ===============================
@@ -145,10 +156,11 @@ router.post(
 // ===============================
 
 router.put(
-  "/:id",
-  authMiddleware,
-  adminMiddleware,
-  updateProduct
+    "/:id",
+    authMiddleware,
+    adminMiddleware,
+    upload.single("image"),
+    updateProduct
 );
 
 // ===============================
@@ -203,5 +215,7 @@ router.delete(
   adminMiddleware,
   deleteReview
 );
+
+
 
 module.exports = router;

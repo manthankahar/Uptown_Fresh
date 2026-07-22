@@ -13,6 +13,7 @@
   "type": "commonjs",
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "cloudinary": "^1.41.3",
     "cors": "^2.8.5",
     "dotenv": "^17.4.2",
     "ejs": "^6.0.1",
@@ -20,7 +21,8 @@
     "fernet": "^0.3.3",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.0",
-    "multer": "^2.1.1",
+    "multer": "^2.2.0",
+    "multer-storage-cloudinary": "^4.0.0",
     "nodemailer": "^9.0.3",
     "pdfkit": "^0.19.1"
   },

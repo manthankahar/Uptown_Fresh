@@ -155,8 +155,37 @@ require("./routes/reviewRoutes")
 const PORT =
 process.env.PORT || 5000;
 
+
+app.use((err, req, res, next) => {
+  console.error("GLOBAL ERROR:");
+  console.error(err);
+
+  res.status(500).json({
+    success: false,
+    message: err.message
+  });
+});
+
 app.listen(PORT, () => {
 console.log(
 `Server Running On Port ${PORT}`
 );
+});
+
+// ===============================
+// Global Error Handler
+// ===============================
+
+app.use((err, req, res, next) => {
+
+    console.log("=========== GLOBAL ERROR ===========");
+    console.log(err);
+    console.log(err.message);
+    console.log(err.stack);
+
+    res.status(500).json({
+        success: false,
+        message: err.message
+    });
+
 });

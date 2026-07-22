@@ -130,22 +130,57 @@ const addProduct = async (req, res) => {
 
   try {
 
+    console.log("========== ADD PRODUCT ==========");
     console.log("BODY =", req.body);
+    console.log("FILE =", req.file);
 
-    const product = await Product.create(req.body);
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Please Upload Product Image"
+      });
+    }
 
-    res.status(201).json({
-      message: "Product Added Successfully",
-      product
+    const product = await Product.create({
+
+      name: req.body.name,
+
+      price: Number(req.body.price),
+
+      category: req.body.category,
+
+      stock: Number(req.body.stock),
+
+      description: req.body.description,
+
+      image: req.file.path
+
     });
 
-  }
-  catch (error) {
+    console.log("PRODUCT =", product);
 
+    res.status(201).json({
+
+      success: true,
+
+      message: "Product Added Successfully",
+
+      product
+
+    });
+
+  } catch (error) {
+
+    console.log("========== ERROR ==========");
     console.log(error);
+    console.log(error.stack);
 
     res.status(500).json({
+
+      success: false,
+
       message: error.message
+
     });
 
   }
@@ -159,19 +194,48 @@ const updateProduct = async (req, res) => {
 
   try {
 
+    const data = {
+
+      ...req.body
+
+    };
+
+    if(req.file){
+
+      data.image = req.file.path;
+
+    }
+
     const product = await Product.findByIdAndUpdate(
+
       req.params.id,
-      req.body,
-      { new: true }
+
+      data,
+
+      {
+
+        new:true
+
+      }
+
     );
 
-    res.json(product);
+    res.json({
+
+      message:"Product Updated Successfully",
+
+      product
+
+    });
 
   }
-  catch (error) {
+
+  catch(error){
 
     res.status(500).json({
-      message: error.message
+
+      message:error.message
+
     });
 
   }
