@@ -49,13 +49,55 @@ total += product.price * item.quantity;
 
 }
 
+// const order = await Order.create({
+
+// userId:req.user.id,
+
+// products:cart.products,
+
+// totalPrice:total
+
+// });
+
+
+const trackingId =
+"UPF-" +
+Date.now().toString().slice(-6);
+
+const estimatedDelivery =
+new Date(
+Date.now() + 30 * 60 * 1000
+);
+
 const order = await Order.create({
 
 userId:req.user.id,
 
 products:cart.products,
 
-totalPrice:total
+totalPrice:total,
+
+trackingId,
+
+status:"Placed",
+
+estimatedDelivery,
+
+paymentMethod:req.body.paymentMethod,
+
+shippingAddress:{
+
+name:req.body.shippingAddress.name,
+
+mobile:req.body.shippingAddress.mobile,
+
+address:req.body.shippingAddress.address,
+
+city:req.body.shippingAddress.city,
+
+pincode:req.body.shippingAddress.pincode
+
+}
 
 });
 
@@ -307,6 +349,12 @@ message:"Order Not Found"
 
 order.status = req.body.status;
 
+if(req.body.status==="Delivered"){
+
+order.deliveredAt = new Date();
+
+}
+
 await order.save();
 
 res.json({
@@ -392,14 +440,32 @@ message: "Access Denied"
 }
 
 // Cancel only before shipping
+// if (
+// order.status === "Packed" ||
+// order.status === "Shipped" ||
+// order.status === "Delivered"
+// ) {
+// return res.status(400).json({
+// message: "Order Cannot Be Cancelled"
+// });
+// }
+
+// Cancel only before delivery starts
+
 if (
-order.status === "Packed" ||
-order.status === "Shipped" ||
+
+order.status === "Out For Delivery" ||
+
 order.status === "Delivered"
+
 ) {
+
 return res.status(400).json({
+
 message: "Order Cannot Be Cancelled"
+
 });
+
 }
 
 order.status = "Cancelled";

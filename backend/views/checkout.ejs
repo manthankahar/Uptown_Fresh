@@ -35,7 +35,7 @@ required
 
 <input
 type="text"
-id="phone"
+id="mobile"
 placeholder="Mobile Number"
 required
 >
@@ -45,6 +45,20 @@ id="address"
 placeholder="Delivery Address"
 required
 ></textarea>
+
+<input
+type="text"
+id="city"
+placeholder="City"
+required
+>
+
+<input
+type="text"
+id="pincode"
+placeholder="Pincode"
+required
+>
 
 <select
 id="payment"
@@ -154,13 +168,27 @@ Authorization:`Bearer ${token}`
 
 body:JSON.stringify({
 
-name:document.getElementById("name").value,
+paymentMethod:
+document.getElementById("payment").value,
 
-phone:document.getElementById("phone").value,
+shippingAddress:{
 
-address:document.getElementById("address").value,
+name:
+document.getElementById("name").value,
 
-payment:document.getElementById("payment").value
+mobile:
+document.getElementById("mobile").value,
+
+address:
+document.getElementById("address").value,
+
+city:
+document.getElementById("city").value,
+
+pincode:
+document.getElementById("pincode").value
+
+}
 
 })
 

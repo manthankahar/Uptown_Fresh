@@ -116,23 +116,37 @@ html += `
 
 <div class="product-card">
 
-<h2>
+<h2 style="display:flex;justify-content:space-between;align-items:center;">
 
-🧾 Order
+<span>
+📦 Order
+</span>
+
+<span
+style="
+font-size:14px;
+background:#27ae60;
+color:white;
+padding:6px 12px;
+border-radius:20px;
+"
+>
+
+${order.trackingId}
+
+</span>
 
 </h2>
+
 
 <hr>
 
 <p>
 
-<b>Status :</b>
+<b>🚚 Status :</b>
 
 <span
-style="
-color:green;
-font-weight:bold;
-"
+class="status-badge status-${order.status.replace(/\s/g,'')}"
 >
 
 ${order.status}
@@ -140,6 +154,106 @@ ${order.status}
 </span>
 
 </p>
+
+<p>
+
+<b>⏰ ETA :</b>
+
+${order.estimatedDelivery ?
+
+new Date(order.estimatedDelivery)
+.toLocaleTimeString([],{
+hour:'2-digit',
+minute:'2-digit'
+})
+
+:
+
+"N/A"
+
+}
+
+</p>
+
+<p>
+
+<b>🆔 Tracking :</b>
+
+${order.trackingId}
+
+</p>
+
+<div class="progress-container">
+
+<div
+class="progress-bar"
+
+style="
+width:
+${
+order.status=="Placed"
+? "25%"
+:
+order.status=="Confirmed"
+? "50%"
+:
+order.status=="Out For Delivery"
+? "75%"
+:
+order.status=="Delivered"
+? "100%"
+:
+"0%"
+}
+"
+
+>
+
+</div>
+
+</div>
+
+<div class="tracking-timeline">
+
+<div class="step ${order.status=="Placed"?"active":""}">
+
+<div class="circle">🛒</div>
+
+<p>Placed</p>
+
+</div>
+
+<div class="line"></div>
+
+<div class="step ${order.status=="Confirmed" || order.status=="Out For Delivery" || order.status=="Delivered" ? "active":""}">
+
+<div class="circle">✅</div>
+
+<p>Confirmed</p>
+
+</div>
+
+<div class="line"></div>
+
+<div class="step ${order.status=="Out For Delivery" || order.status=="Delivered" ? "active":""}">
+
+<div class="circle">🚚</div>
+
+<p>Out For Delivery</p>
+
+</div>
+
+<div class="line"></div>
+
+<div class="step ${order.status=="Delivered" ? "active":""}">
+
+<div class="circle">🏠</div>
+
+<p>Delivered</p>
+
+</div>
+
+</div>
 
 <p>
 
@@ -165,6 +279,47 @@ ${new Date(order.createdAt).toLocaleString()}
 
 </p>
 
+<div class="delivery-card">
+
+<h3>📍 Delivery Address</h3>
+
+<p>
+<b>👤 Name :</b>
+${order.shippingAddress?.name || "-"}
+</p>
+
+<p>
+<b>📞 Mobile :</b>
+${order.shippingAddress?.mobile || "-"}
+</p>
+
+<p>
+<b>🏠 Address :</b>
+${order.shippingAddress?.address || "-"}
+</p>
+
+<p>
+<b>🏙 City :</b>
+${order.shippingAddress?.city || "-"}
+</p>
+
+<p>
+<b>📮 Pincode :</b>
+${order.shippingAddress?.pincode || "-"}
+</p>
+
+</div>
+
+<div
+class="countdown"
+id="countdown-${order._id}"
+data-time="${order.estimatedDelivery}"
+>
+
+Loading...
+
+</div>
+
 <br>
 
 <h3>
@@ -188,7 +343,9 @@ onclick="downloadInvoice('${order._id}')"
 
 </button>
 
-${order.status=="Pending" || order.status=="Confirmed" ? `
+${order.status=="Placed"
+||
+order.status=="Confirmed" ? `
 
 <br><br>
 
@@ -214,6 +371,8 @@ onclick="cancelOrder('${order._id}')"
 
 document.getElementById("orders").innerHTML = html;
 
+startCountdown();
+
 }catch(error){
 
 console.log(error);
@@ -227,7 +386,7 @@ showToast(
 
 }
 
-loadOrders();
+// loadOrders();
 
 async function downloadInvoice(orderId){
 
@@ -358,6 +517,14 @@ loadOrders();
 }
 
 // Hide Modal on Page Load
+// window.onload = function(){
+
+// document.getElementById("cancelModal").style.display = "none";
+
+// loadOrders();
+
+// };
+
 window.onload = function(){
 
 document.getElementById("cancelModal").style.display = "none";
@@ -365,6 +532,64 @@ document.getElementById("cancelModal").style.display = "none";
 loadOrders();
 
 };
+
+// ===============================
+// Live Countdown Timer
+// ===============================
+
+function startCountdown(){
+
+const timers = document.querySelectorAll(".countdown");
+
+timers.forEach(timer=>{
+
+const target = new Date(timer.dataset.time).getTime();
+
+function update(){
+
+const now = new Date().getTime();
+
+const distance = target - now;
+
+if(distance <= 0){
+
+timer.innerHTML = "🚚 Arriving Soon";
+
+return;
+
+}
+
+const hours = Math.floor(distance / (1000*60*60));
+
+const minutes = Math.floor((distance%(1000*60*60))/(1000*60));
+
+const seconds = Math.floor((distance%(1000*60))/1000);
+
+timer.innerHTML = `
+<div style="
+margin-top:10px;
+padding:10px;
+background:#ecfdf5;
+border-radius:10px;
+font-weight:bold;
+color:#27ae60;
+">
+
+⏳ Remaining :
+${hours}h ${minutes}m ${seconds}s
+
+</div>
+`;
+
+}
+
+update();
+
+setInterval(update,1000);
+
+});
+
+}
 
 </script>
 
